@@ -1,0 +1,12 @@
+[package]
+name = "bevy_text_mesh"
+version = "0.0.1"
+edition = "2018"
+description = "A bevy 3D text mesh generator for displaying text"
+repository = "https://github.com/blaind/bevy_text_mesh"
+keywords = ["bevy"]
+categories = [
+    "game-engines"
+]
+license = "MIT"
+readme = "README.md"
