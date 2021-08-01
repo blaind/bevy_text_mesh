@@ -10,3 +10,36 @@ categories = [
 ]
 license = "MIT"
 readme = "README.md"
+
+[dependencies]
+ttf2mesh = "0.0.5"
+bitflags = "1.2"
+anyhow = "1.0"
+glyph_brush_layout = "0.2.3"
+
+[dependencies.bevy]
+git = "https://github.com/bevyengine/bevy"
+branch = "main"
+version = "0.5.0"
+default-features = false
+
+[dev-dependencies]
+rand = "0.8.4"
+
+[dev-dependencies.bevy]
+git = "https://github.com/bevyengine/bevy"
+branch = "main"
+version = "0.5.0"
+default-features = false
+features = [
+  "dynamic",
+  "bevy_dynamic_plugin",
+  "bevy_gilrs",
+  "bevy_gltf",
+  "bevy_wgpu",
+  "bevy_winit",
+  "render",
+  "png",
+  "hdr",
+  "x11",
+]
