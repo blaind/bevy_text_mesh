@@ -31,6 +31,17 @@ Consider this as a preview of the plugin for gathering feedback about the API:
 
 For full examples, see the [examples](/examples) -folder.
 
+Prequisites (for compiling [ttf2mesh-rs](https://crates.io/crates/ttf2mesh)):
+
+    apt-get install build-essential patch
+
+Add to Cargo.toml:
+
+```
+[dependencies]
+bevy_text_mesh = { git = "https://github.com/blaind/bevy_text_mesh" }
+```
+
 Include the library:
 
 ```rust
