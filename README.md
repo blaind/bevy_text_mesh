@@ -48,7 +48,7 @@ App::build()
 
 Then, add the desired TrueType-fonts (with suffix `.ttf`) into your assets folder, a good convention is to store them to `assets/fonts` folder.
 
-For example, see Fira fonts. Please read also their LICENSE.
+For example, see Fira fonts. Please read also their [LICENSE](https://github.com/mozilla/Fira/blob/master/LICENSE).
 
     mkdir -p assets/fonts
     wget https://github.com/mozilla/Fira/raw/master/ttf/FiraSans-Medium.ttf -O assets/fonts/FiraSans-Medium.ttf
