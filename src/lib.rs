@@ -1,5 +1,4 @@
-#![feature(test)]
-extern crate test;
+#![cfg_attr(feature = "unstable", feature(test))]
 
 #[macro_use]
 extern crate bitflags;

@@ -192,9 +192,8 @@ mod tests {
     };
 
     use super::*;
-    use test::Bencher;
 
-    fn get_font_bytes() -> Vec<u8> {
+    pub(crate) fn get_font_bytes() -> Vec<u8> {
         std::fs::read("./assets/fonts/FiraMono-Medium.ttf").unwrap()
     }
 
@@ -219,11 +218,19 @@ mod tests {
 
         let _ = generate_text_mesh(&text_mesh, &mut font, Some(&mut mesh_cache));
     }
+}
+
+#[cfg(all(feature = "unstable", test))]
+mod bench {
+    extern crate test;
+
+    use super::*;
+    use test::Bencher;
 
     #[bench]
     fn bench_get_glyph_cached(b: &mut Bencher) {
         let mut mesh_cache = MeshCache::default();
-        let mut font = ttf2mesh::TTFFile::from_buffer_vec(get_font_bytes()).unwrap();
+        let mut font = ttf2mesh::TTFFile::from_buffer_vec(tests::get_font_bytes()).unwrap();
 
         let text_mesh = TextMesh::new_no_font("hello world!".to_string());
         let _ = generate_text_mesh(&text_mesh, &mut font, Some(&mut mesh_cache));
@@ -235,7 +242,7 @@ mod tests {
 
     #[bench]
     fn bench_get_glyph_no_cache(b: &mut Bencher) {
-        let mut font = ttf2mesh::TTFFile::from_buffer_vec(get_font_bytes()).unwrap();
+        let mut font = ttf2mesh::TTFFile::from_buffer_vec(tests::get_font_bytes()).unwrap();
         let text_mesh = TextMesh::new_no_font("hello world!".to_string());
 
         b.iter(|| {
