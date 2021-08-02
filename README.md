@@ -31,10 +31,22 @@ Consider this as a preview of the plugin for gathering feedback about the API:
 
 For full examples, see the [examples](/examples) -folder.
 
+## Prequisites
+
 Prequisites (for compiling [ttf2mesh-rs](https://crates.io/crates/ttf2mesh)):
 
     apt-get install build-essential patch
 
+## Running the examples
+
+```
+git clone https://github.com/blaind/bevy_text_mesh.git
+cd bevy_text_mesh
+cargo run --example 3d_scene --release # or
+cargo run --example performance --release
+```
+
+## Integrating to your crate
 Add to Cargo.toml:
 
 ```

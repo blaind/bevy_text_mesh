@@ -23,7 +23,7 @@ const TEXT_SPAWN_INTERVAL: u64 = 125;
 const TEXT_UPDATE_INTERVAL_MS: u64 = 1;
 
 // initial wait time before starting spawn
-const INITIAL_WAIT_MS: u64 = 10_000;
+const INITIAL_WAIT_MS: u64 = 500;
 
 fn main() {
     App::new()
