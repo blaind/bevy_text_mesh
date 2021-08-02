@@ -93,7 +93,7 @@ let font: Handle<TextMeshFont> = asset_server.load("fonts/FiraSans-Medium.ttf");
 Then, spawn a textmesh bundle:
 ```rust
 commands.spawn_bundle(TextMeshBundle {
-    text_mesh: TextMesh::new_with_color("Hello Bevy", Color::rgb(1., 1., 0.)),
+    text_mesh: TextMesh::new_with_color("Hello Bevy", font, Color::rgb(1., 1., 0.)),
     transform: Transform::from_xyz(-1., 1.75, 0.),
     ..Default::default()
 });
