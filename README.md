@@ -19,7 +19,6 @@ The text mesh is generated at runtime from runtime-tessellated (and cached) True
 Consider this as a preview of the plugin for gathering feedback about the API:
 
 * **The API will change in future - still iterating**
-* Currently supporting bevy github main head (e.g. no support for bevy 0.5)
 * Multiple `TextMesh` configuration fields are not implemented yet, see example below
 * Text color update is not implemented yet
 * Spacing of characters are incorrect
@@ -27,9 +26,14 @@ Consider this as a preview of the plugin for gathering feedback about the API:
 * Crate exposes an asset loader for `.ttf` files, and replaces any other loaders (e.g. `bevy_text`)
 * **Currently, do not expose for untrusted font input**
 
-## Usage
+## Bevy versions support table
 
-For full examples, see the [examples](/examples) -folder.
+|bevy|bevy_text_mesh|
+|---|---|
+|git main|git main|
+|0.5|0.0.2|
+
+## Usage
 
 ## Prequisites
 
@@ -39,6 +43,8 @@ Prequisites (for compiling [ttf2mesh-rs](https://crates.io/crates/ttf2mesh)):
 
 ## Running the examples
 
+See the [examples](/examples) -folder.
+
 ```
 git clone https://github.com/blaind/bevy_text_mesh.git
 cd bevy_text_mesh
@@ -46,7 +52,7 @@ cargo run --example 3d_scene --release # or
 cargo run --example performance --release
 ```
 
-## Integrating to your crate
+## Integrating to your 3d app
 Add to Cargo.toml:
 
 ```
