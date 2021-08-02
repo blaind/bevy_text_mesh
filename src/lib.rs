@@ -25,7 +25,7 @@ pub use prelude::*;
 pub struct TextMeshPlugin;
 
 impl Plugin for TextMeshPlugin {
-    fn build(&self, app: &mut App) {
+    fn build(&self, app: &mut AppBuilder) {
         app.add_asset::<font_loader::TextMeshFont>()
             .add_system(mesh_system::text_mesh.system())
             .add_system(mesh_system::font_loaded.system())

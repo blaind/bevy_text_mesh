@@ -26,7 +26,7 @@ const TEXT_UPDATE_INTERVAL_MS: u64 = 1;
 const INITIAL_WAIT_MS: u64 = 500;
 
 fn main() {
-    App::new()
+    App::build()
         .insert_resource(Msaa { samples: 4 })
         .add_plugins(DefaultPlugins)
         .add_plugin(TextMeshPlugin)
@@ -256,7 +256,7 @@ fn setup(
         material: materials.add(Color::rgb(0.3, 0.5, 0.3).into()),
         ..Default::default()
     });
-    commands.spawn_bundle(PointLightBundle {
+    commands.spawn_bundle(LightBundle {
         transform: Transform::from_xyz(4.0, 8.0, 4.0),
         ..Default::default()
     });

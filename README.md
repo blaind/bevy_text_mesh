@@ -19,7 +19,6 @@ The text mesh is generated at runtime from runtime-tessellated (and cached) True
 Consider this as a preview of the plugin for gathering feedback about the API:
 
 * **The API will change in future - still iterating**
-* Currently supporting bevy github main head (e.g. no support for bevy 0.5)
 * Multiple `TextMesh` configuration fields are not implemented yet, see example below
 * Text color update is not implemented yet
 * Spacing of characters are incorrect

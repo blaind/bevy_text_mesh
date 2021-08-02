@@ -4,7 +4,7 @@ use bevy::{prelude::*, render::camera::Camera};
 use bevy_text_mesh::prelude::*;
 
 fn main() {
-    App::new()
+    App::build()
         .insert_resource(Msaa { samples: 4 })
         .add_plugins(DefaultPlugins)
         .add_plugin(TextMeshPlugin)
@@ -120,7 +120,7 @@ fn setup(
         transform: Transform::from_xyz(0.0, 0.5, 0.0),
         ..Default::default()
     });
-    commands.spawn_bundle(PointLightBundle {
+    commands.spawn_bundle(LightBundle {
         transform: Transform::from_xyz(4.0, 8.0, 4.0),
         ..Default::default()
     });
