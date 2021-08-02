@@ -25,6 +25,9 @@ const TEXT_UPDATE_INTERVAL_MS: u64 = 1;
 // initial wait time before starting spawn
 const INITIAL_WAIT_MS: u64 = 500;
 
+// maximum amount of texts - after this existing ones will be despawned
+const MAX_TEXT_COUNT: usize = 15;
+
 fn main() {
     App::new()
         .insert_resource(Msaa { samples: 4 })
@@ -35,6 +38,7 @@ fn main() {
         .add_startup_system(setup.system())
         .add_startup_system(setup_text_mesh.system())
         .add_system(spawn_meshes.system())
+        .add_system(despawn_meshes.system())
         .add_system(update_text_mesh.system())
         .add_system(rotate_camera.system())
         .add_system_to_stage(CoreStage::PostUpdate, update_frame_rate.system())
@@ -175,6 +179,22 @@ fn spawn_meshes(
     }
 }
 
+fn despawn_meshes(
+    text_meshes: Query<Entity, With<EngineTime>>,
+    mut commands: Commands,
+    mut state: ResMut<SceneState>,
+) {
+    if state.text_count > MAX_TEXT_COUNT {
+        let mut despawned = 0;
+        for entity in text_meshes.iter().take(state.text_count - MAX_TEXT_COUNT) {
+            commands.entity(entity).despawn();
+            despawned += 1;
+        }
+
+        state.text_count -= despawned;
+    }
+}
+
 fn update_text_mesh(
     mut diagnostics: ResMut<Diagnostics>,
     mut text_meshes: Query<&mut TextMesh, With<EngineTime>>,
@@ -228,7 +248,7 @@ fn update_frame_rate(
             if fps.is_some() {
                 let fps = diagnostics
                     .get_measurement(FrameTimeDiagnosticsPlugin::FPS)
-                    .unwrap();
+                    .expect("diagnostics-plugin-fps");
 
                 text_mesh.text = format!("FPS={}", fps.value.round() as usize);
             } else {
@@ -236,9 +256,13 @@ fn update_frame_rate(
             }
         }
 
-        let camera_entity = camera_entity.iter().next().unwrap();
-        let camera_transform = transform_query.get_mut(camera_entity).unwrap().clone();
-        let mut transform = transform_query.get_mut(text_mesh_entity).unwrap();
+        let camera_entity = camera_entity.iter().next().expect("camera entity");
+        let camera_transform = transform_query.get_mut(camera_entity).expect("camera_transform").clone();
+
+        let mut transform = match transform_query.get_mut(text_mesh_entity) {
+            Ok(t) => t,
+            Err(_) => continue,
+        };
 
         // eh - why negative?
         *transform = transform.looking_at(-camera_transform.translation, Vec3::Y);
