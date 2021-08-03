@@ -31,7 +31,7 @@ pub(crate) fn generate_text_mesh(
         Some(cache) => cache,
         None => {
             internal_cache = Some(MeshCache::default());
-            internal_cache.as_mut().unwrap()
+            internal_cache.as_mut().expect("could not get internal_cache")
         }
     };
 
@@ -81,14 +81,14 @@ pub(crate) fn generate_text_mesh(
                     Ok(glyph) => glyph,
                     Err(_) => {
                         println!("Glyph {} not found", char);
-                        font.glyph_from_char('?').unwrap()
+                        font.glyph_from_char('?').expect("could not find fallback glyph icon")
                     }
                 };
 
                 let mesh = match &text_mesh.size.depth {
                     Some(unit) => glyph
-                        .to_3d_mesh(text_mesh.style.mesh_quality, unit.as_scalar().unwrap())
-                        .unwrap(),
+                        .to_3d_mesh(text_mesh.style.mesh_quality, unit.as_scalar().expect("unit.as_scalar() failed"))
+                        .expect("TTFFont to glyph failed"),
                     None => todo!("2d glyphs are not implemented yet. Define depth"),
                 };
 

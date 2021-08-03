@@ -12,7 +12,7 @@ impl AssetLoader for FontLoader {
     ) -> BoxedFuture<'a, anyhow::Result<()>> {
         Box::pin(async move {
             let font = TextMeshFont {
-                ttf_font: ttf2mesh::TTFFile::from_buffer_vec(bytes.to_vec()).unwrap(),
+                ttf_font: ttf2mesh::TTFFile::from_buffer_vec(bytes.to_vec()).expect("TTFFile::from_buffer_vec"),
             };
 
             load_context.set_default_asset(LoadedAsset::new(font));

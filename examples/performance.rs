@@ -38,7 +38,7 @@ fn main() {
         .add_startup_system(setup.system())
         .add_startup_system(setup_text_mesh.system())
         .add_system(spawn_meshes.system())
-        .add_system(despawn_meshes.system())
+        .add_system_to_stage(CoreStage::PreUpdate, despawn_meshes.system())
         .add_system(update_text_mesh.system())
         .add_system(rotate_camera.system())
         .add_system_to_stage(CoreStage::PostUpdate, update_frame_rate.system())
@@ -186,6 +186,7 @@ fn despawn_meshes(
 ) {
     if state.text_count > MAX_TEXT_COUNT {
         let mut despawned = 0;
+
         for entity in text_meshes.iter().take(state.text_count - MAX_TEXT_COUNT) {
             commands.entity(entity).despawn();
             despawned += 1;
@@ -257,7 +258,10 @@ fn update_frame_rate(
         }
 
         let camera_entity = camera_entity.iter().next().expect("camera entity");
-        let camera_transform = transform_query.get_mut(camera_entity).expect("camera_transform").clone();
+        let camera_transform = transform_query
+            .get_mut(camera_entity)
+            .expect("camera_transform")
+            .clone();
 
         let mut transform = match transform_query.get_mut(text_mesh_entity) {
             Ok(t) => t,
