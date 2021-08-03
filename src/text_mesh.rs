@@ -79,7 +79,7 @@ impl TextMesh {
     }
 }
 
-const DEFAULT_FONT_SIZE: f32 = 36.;
+const DEFAULT_FONT_SIZE: f32 = 18.;
 
 #[derive(Clone, Debug)]
 pub struct TextMeshSize {
@@ -93,9 +93,9 @@ pub struct TextMeshSize {
 impl Default for TextMeshSize {
     fn default() -> Self {
         Self {
-            width: SizeUnit::NonStandard(DEFAULT_FONT_SIZE * 10.),
-            height: SizeUnit::NonStandard(DEFAULT_FONT_SIZE * 5.),
-            depth: Some(SizeUnit::NonStandard(DEFAULT_FONT_SIZE * 0.10)),
+            width: SizeUnit::NonStandard(DEFAULT_FONT_SIZE * 16.),
+            height: SizeUnit::NonStandard(DEFAULT_FONT_SIZE * 8.),
+            depth: Some(SizeUnit::NonStandard(DEFAULT_FONT_SIZE * 2.)),
             wrapping: true,
             overflow: false,
         }
@@ -136,7 +136,7 @@ impl SizeUnit {
     pub fn as_scalar(&self) -> Option<f32> {
         match self {
             SizeUnit::Auto => None,
-            SizeUnit::NonStandard(size) => Some(size / 72.),
+            SizeUnit::NonStandard(size) => Some(size / 144.),
         }
     }
 }
@@ -150,8 +150,8 @@ pub struct TextMeshAlignment {
 impl Default for TextMeshAlignment {
     fn default() -> Self {
         TextMeshAlignment {
-            vertical: VerticalAlign::Top,
-            horizontal: HorizontalAlign::Left,
+            vertical: VerticalAlign::Center,
+            horizontal: HorizontalAlign::Center,
         }
     }
 }

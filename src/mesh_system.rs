@@ -22,6 +22,7 @@ pub(crate) fn text_mesh(
             &TextMesh,
             Option<&Handle<Mesh>>,
             &TextMeshState,
+            Option<&Visible>,
         ),
         Or<(Changed<TextMesh>, Changed<TextMeshState>)>,
     >,
@@ -42,7 +43,8 @@ pub(crate) fn text_mesh(
     // TODO: performance - split to mesh-update and mesh-create systems?
 
     for text_mesh in text_meshes.iter() {
-        let (entity, transform, global_transform, material, text_mesh, mesh, _state) = text_mesh;
+        let (entity, transform, global_transform, material, text_mesh, mesh, _state, visible) =
+            text_mesh;
 
         let font = match fonts.get_mut(&text_mesh.style.font) {
             Some(font) => font,
@@ -67,7 +69,9 @@ pub(crate) fn text_mesh(
 
                 apply_mesh(ttf2_mesh, &mut mesh);
 
-                commands.entity(entity).insert_bundle(PbrBundle {
+                let mut bundle = commands.entity(entity);
+
+                bundle.insert_bundle(PbrBundle {
                     mesh: meshes.add(mesh),
                     material: material.map(|m| m.clone()).unwrap_or_else(|| {
                         materials.add(StandardMaterial {
@@ -77,8 +81,35 @@ pub(crate) fn text_mesh(
                     }),
                     transform: transform.clone(),
                     global_transform: global_transform.clone(),
+                    visible: visible.map(|v| v.clone()).unwrap_or(Default::default()),
                     ..Default::default()
                 });
+
+                if 1 < 10 {
+                    bundle.with_children(|cmd| {
+                        cmd.spawn_bundle(PbrBundle {
+                            mesh: meshes.add(Mesh::from(shape::Box::new(
+                                text_mesh.size.width.as_scalar().unwrap(),
+                                text_mesh.size.height.as_scalar().unwrap(),
+                                text_mesh.size.width.as_scalar().unwrap() * 0.01,
+                            ))),
+                            material: materials.add(Color::rgba(0.5, 0.5, 0.5, 0.3).into()),
+                            transform: Transform::from_xyz(0., 0., -0.0001),
+                            visible: Visible {
+                                is_transparent: true,
+                                ..Default::default()
+                            },
+                            ..Default::default()
+                        });
+
+                        cmd.spawn_bundle(PbrBundle {
+                            mesh: meshes.add(Mesh::from(shape::Cube::new(0.05))),
+                            material: materials.add(Color::rgb(0.0, 1.0, 0.0).into()),
+                            transform: Transform::from_xyz(0., 0., 0.),
+                            ..Default::default()
+                        });
+                    });
+                }
             }
         }
     }

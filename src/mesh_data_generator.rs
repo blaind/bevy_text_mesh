@@ -31,7 +31,9 @@ pub(crate) fn generate_text_mesh(
         Some(cache) => cache,
         None => {
             internal_cache = Some(MeshCache::default());
-            internal_cache.as_mut().expect("could not get internal_cache")
+            internal_cache
+                .as_mut()
+                .expect("could not get internal_cache")
         }
     };
 
@@ -42,7 +44,12 @@ pub(crate) fn generate_text_mesh(
 
     let mut vertices_offset: usize = 0;
 
-    let depth = 0.08;
+    let depth = text_mesh
+        .size
+        .depth
+        .as_ref()
+        .map(|d| d.as_scalar().unwrap())
+        .unwrap_or(0.15);
 
     let text = if text_mesh.style.font_style.contains(FontStyle::UPPERCASE) {
         text_mesh.text.to_uppercase()
@@ -52,21 +59,27 @@ pub(crate) fn generate_text_mesh(
         text_mesh.text.clone() // TODO performance - extra allocation
     };
 
-    let scalar = match text_mesh.style.font_size.as_scalar() {
+    let scale_factor = match text_mesh.style.font_size.as_scalar() {
         Some(scalar) => scalar,
         None => todo!("Font automatic sizing has not been implemented yet"),
     };
 
-    let spacing = Vec2::new(0.08, 0.1) * scalar;
+    let spacing = Vec2::new(0.08, 0.1) * scale_factor;
 
-    let mut scaled_offset = Vec2::ZERO;
+    let line_start = -text_mesh.size.width.as_scalar().unwrap() / 2.0;
+    let line_end = text_mesh.size.width.as_scalar().unwrap() / 2.0;
+
+    let vertical_max_y = text_mesh.size.height.as_scalar().unwrap() / 2.0;
+
+    let mut scaled_offset = Vec2::new(line_start, vertical_max_y - 1.0 * scale_factor);
+
     let mut scaled_row_y_max_height = 0.;
 
     //println!("scalar={}, spacing={}", scalar, spacing);
     for char in text.chars() {
         //println!("{} offset={}", char, scaled_offset);
         if char == ' ' {
-            scaled_offset.x += 0.2 * scalar + spacing.x;
+            scaled_offset.x += 0.2 * scale_factor + spacing.x;
             continue;
         }
 
@@ -81,13 +94,17 @@ pub(crate) fn generate_text_mesh(
                     Ok(glyph) => glyph,
                     Err(_) => {
                         println!("Glyph {} not found", char);
-                        font.glyph_from_char('?').expect("could not find fallback glyph icon")
+                        font.glyph_from_char('?')
+                            .expect("could not find fallback glyph icon")
                     }
                 };
 
                 let mesh = match &text_mesh.size.depth {
                     Some(unit) => glyph
-                        .to_3d_mesh(text_mesh.style.mesh_quality, unit.as_scalar().expect("unit.as_scalar() failed"))
+                        .to_3d_mesh(
+                            text_mesh.style.mesh_quality,
+                            unit.as_scalar().expect("unit.as_scalar() failed"),
+                        )
                         .expect("TTFFont to glyph failed"),
                     None => todo!("2d glyphs are not implemented yet. Define depth"),
                 };
@@ -117,7 +134,7 @@ pub(crate) fn generate_text_mesh(
             }
         }
 
-        let y_diff = (ymax - ymin) * scalar;
+        let y_diff = (ymax - ymin) * scale_factor;
         if scaled_row_y_max_height < y_diff {
             scaled_row_y_max_height = y_diff;
         }
@@ -125,9 +142,9 @@ pub(crate) fn generate_text_mesh(
         for vertex in mesh.iter_vertices() {
             let (x, y, z) = vertex.val();
             vertices.push([
-                x * scalar + scaled_offset.x - xmin * scalar,
-                y * scalar + scaled_offset.y,
-                z * scalar,
+                x * scale_factor + scaled_offset.x - xmin * scale_factor,
+                y * scale_factor + scaled_offset.y,
+                z * scale_factor,
             ]);
         }
 
@@ -162,12 +179,10 @@ pub(crate) fn generate_text_mesh(
 
         vertices_offset += mesh.vertices_len();
 
-        scaled_offset.x += (xmax - xmin) * scalar + spacing.x;
+        scaled_offset.x += (xmax - xmin) * scale_factor + spacing.x;
 
-        if text_mesh.size.wrapping
-            && scaled_offset.x + scalar + spacing.x > text_mesh.size.width.as_scalar().unwrap()
-        {
-            scaled_offset.x = 0.;
+        if text_mesh.size.wrapping && scaled_offset.x + scale_factor + spacing.x > line_end {
+            scaled_offset.x = line_start;
             scaled_offset.y -= scaled_row_y_max_height + spacing.y;
         }
 
