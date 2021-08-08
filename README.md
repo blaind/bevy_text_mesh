@@ -24,7 +24,6 @@ Consider this as a preview of the plugin for gathering feedback about the API:
 * Spacing of characters are incorrect
 * Mesh cache purging is not implemented - this implementation will  leak memory
 * Crate exposes an asset loader for `.ttf` files, and replaces any other loaders (e.g. `bevy_text`)
-* **Currently, do not expose for untrusted font input**
 
 ## Usage
 
