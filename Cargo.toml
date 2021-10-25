@@ -12,7 +12,7 @@ license = "MIT"
 readme = "README.md"
 
 [dependencies]
-ttf2mesh = "0.0.7"
+ttf2mesh = "0.2.0"
 bitflags = "1.2"
 anyhow = "1.0"
 glyph_brush_layout = "0.2.3"
