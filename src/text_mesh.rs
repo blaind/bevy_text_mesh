@@ -20,7 +20,7 @@ pub struct TextMeshBundle {
 }
 
 /// Text mesh configuration
-#[derive(Debug)]
+#[derive(Debug, Component)]
 pub struct TextMesh {
     /// Text string to be displayed
     pub text: String,

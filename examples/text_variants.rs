@@ -92,8 +92,8 @@ fn spawn_text(
             base_color: Color::rgba(1., 0., 0., 0.4),
             ..Default::default()
         }))
-        .insert(Visible {
-            is_transparent: true,
+        .insert(Visibility {
+            // is_transparent: true, FIXME
             ..Default::default()
         });
 }

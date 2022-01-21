@@ -1,7 +1,5 @@
-use bevy::{
-    prelude::*,
-    render::{mesh::Indices, pipeline::PrimitiveTopology},
-};
+use bevy::render::render_resource::PrimitiveTopology;
+use bevy::{prelude::*, render::mesh::Indices};
 
 use crate::{
     font_loader::TextMeshFont, mesh_cache::MeshCache, mesh_data_generator::generate_text_mesh,
@@ -22,7 +20,7 @@ pub(crate) fn text_mesh(
             &TextMesh,
             Option<&Handle<Mesh>>,
             &TextMeshState,
-            Option<&Visible>,
+            Option<&Visibility>,
         ),
         Or<(Changed<TextMesh>, Changed<TextMeshState>)>,
     >,
@@ -81,7 +79,7 @@ pub(crate) fn text_mesh(
                     }),
                     transform: transform.clone(),
                     global_transform: global_transform.clone(),
-                    visible: visible.map(|v| v.clone()).unwrap_or(Default::default()),
+                    visibility: visible.map(|v| v.clone()).unwrap_or(Default::default()),
                     ..Default::default()
                 });
 
@@ -95,8 +93,8 @@ pub(crate) fn text_mesh(
                             ))),
                             material: materials.add(Color::rgba(0.5, 0.5, 0.5, 0.3).into()),
                             transform: Transform::from_xyz(0., 0., -0.0001),
-                            visible: Visible {
-                                is_transparent: true,
+                            visibility: Visibility {
+                                // is_transparent: true, FIXME ?
                                 ..Default::default()
                             },
                             ..Default::default()
@@ -144,7 +142,7 @@ pub(crate) fn font_loaded(
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Component)]
 pub struct TextMeshState {
     // this state matters only when the fonts have not been loaded yet
     // will be None for text bundles spawned when fonts have are already loaded

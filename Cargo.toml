@@ -1,6 +1,6 @@
 [package]
 name = "bevy_text_mesh"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2018"
 description = "A bevy 3D text mesh generator for displaying text"
 repository = "https://github.com/blaind/bevy_text_mesh"
@@ -10,33 +10,26 @@ categories = [
 ]
 license = "MIT"
 readme = "README.md"
+resolver="2"
 
 [dependencies]
-ttf2mesh = "0.0.7"
+ttf2mesh = "0.2.0"
 bitflags = "1.2"
 anyhow = "1.0"
 glyph_brush_layout = "0.2.3"
 
 [dependencies.bevy]
-git = "https://github.com/bevyengine/bevy"
-branch = "main"
-version = "0.5.0"
+version = "0.6.0"
 default-features = false
 
 [dev-dependencies]
 rand = "0.8.4"
 
 [dev-dependencies.bevy]
-git = "https://github.com/bevyengine/bevy"
-branch = "main"
-version = "0.5.0"
+version = "0.6.0"
 default-features = false
 features = [
-  "dynamic",
-  "bevy_dynamic_plugin",
   "bevy_gilrs",
-  "bevy_gltf",
-  "bevy_wgpu",
   "bevy_winit",
   "render",
   "png",

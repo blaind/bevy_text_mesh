@@ -69,6 +69,7 @@ struct UpdateTimer {
     timer: Timer,
 }
 
+#[derive(Component)]
 struct EngineTime;
 
 fn update_text_mesh(
