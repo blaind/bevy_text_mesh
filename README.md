@@ -1,11 +1,10 @@
 # bevy_text_mesh &emsp; [![Build Status]][actions] [![Latest Version]][crates.io] [![Docs Version]][docs]
 
-[Build Status]: https://img.shields.io/github/workflow/status/blaind/bevy_text_mesh/test
+[build status]: https://img.shields.io/github/workflow/status/blaind/bevy_text_mesh/test
 [actions]: https://github.com/blaind/bevy_text_mesh/actions?query=branch%3Amain
-[Latest Version]: https://img.shields.io/crates/v/bevy_text_mesh.svg
+[latest version]: https://img.shields.io/crates/v/bevy_text_mesh.svg
 [crates.io]: https://crates.io/crates/bevy_text_mesh
-
-[Docs Version]: https://docs.rs/bevy_text_mesh/badge.svg
+[docs version]: https://docs.rs/bevy_text_mesh/badge.svg
 [docs]: https://docs.rs/bevy_text_mesh
 
 A bevy 3D text mesh generator plugin for displaying text in 3D scenes
@@ -18,20 +17,20 @@ The text mesh is generated at runtime from runtime-tessellated (and cached) True
 
 Consider this as a preview of the plugin for gathering feedback about the API:
 
-* **The API will change in future - still iterating**
-* Multiple `TextMesh` configuration fields are not implemented yet, see example below
-* Text color update is not implemented yet
-* Spacing of characters are incorrect
-* Mesh cache purging is not implemented - this implementation will  leak memory
-* Crate exposes an asset loader for `.ttf` files, and replaces any other loaders (e.g. `bevy_text`)
-* **Currently, do not expose for untrusted font input**
+- **The API will change in future - still iterating**
+- Multiple `TextMesh` configuration fields are not implemented yet, see example below
+- Text color update is not implemented yet
+- Spacing of characters are incorrect
+- Mesh cache purging is not implemented - this implementation will leak memory
+- Crate exposes an asset loader for `.ttf` files, and replaces any other loaders (e.g. `bevy_text`)
+- **Currently, do not expose for untrusted font input**
 
 ## Bevy versions support table
 
-|bevy|bevy_text_mesh|
-|---|---|
-|git main|git main|
-|0.5|0.0.2|
+| bevy | bevy_text_mesh |
+| ---- | -------------- |
+| 0.6  | 0.1.0          |
+| 0.5  | 0.0.2          |
 
 ## Usage
 
@@ -52,12 +51,13 @@ cargo run --example 3d_scene --release # or
 cargo run --example performance --release
 ```
 
-## Integrating to your 3d app
+## Integrating to your Bevy App
+
 Add to Cargo.toml:
 
 ```
 [dependencies]
-bevy_text_mesh = { git = "https://github.com/blaind/bevy_text_mesh" }
+bevy_text_mesh = "0.1.0"
 ```
 
 Include the library:
@@ -91,6 +91,7 @@ let font: Handle<TextMeshFont> = asset_server.load("fonts/FiraSans-Medium.ttf");
 ```
 
 Then, spawn a textmesh bundle:
+
 ```rust
 commands.spawn_bundle(TextMeshBundle {
     text_mesh: TextMesh::new_with_color("Hello Bevy", font, Color::rgb(1., 1., 0.)),
@@ -143,5 +144,4 @@ Licensed under <a href="LICENSE">MIT license</a>
 ### Contribution
 
 Unless you explicitly state otherwise, any contribution intentionally submitted
-for inclusion in the software by you,  shall be licensed as above, without any additional terms or conditions.
-
+for inclusion in the software by you, shall be licensed as above, without any additional terms or conditions.

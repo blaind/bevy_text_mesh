@@ -1,7 +1,5 @@
-use bevy::{
-    prelude::*,
-    render::{mesh::Indices, pipeline::PrimitiveTopology},
-};
+use bevy::render::render_resource::PrimitiveTopology;
+use bevy::{prelude::*, render::mesh::Indices};
 
 use crate::{
     font_loader::TextMeshFont, mesh_cache::MeshCache, mesh_data_generator::generate_text_mesh,
@@ -109,7 +107,7 @@ pub(crate) fn font_loaded(
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Component)]
 pub struct TextMeshState {
     // this state matters only when the fonts have not been loaded yet
     // will be None for text bundles spawned when fonts have are already loaded

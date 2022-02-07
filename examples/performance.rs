@@ -54,8 +54,13 @@ struct UpdateTimer {
     text_update_timer: Timer,
 }
 
+#[derive(Component)]
 struct EngineTime;
+
+#[derive(Component)]
 struct FPS;
+
+#[derive(Component)]
 struct TextCount;
 
 pub const TEXT_MESH_UPDATES: DiagnosticId =
