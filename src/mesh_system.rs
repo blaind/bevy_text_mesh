@@ -83,7 +83,7 @@ pub(crate) fn text_mesh(
                     ..Default::default()
                 });
 
-                if 1 < 10 {
+                if option_env!("DEBUG_TEXT_MESH").is_some() {
                     bundle.with_children(|cmd| {
                         cmd.spawn_bundle(PbrBundle {
                             mesh: meshes.add(Mesh::from(shape::Box::new(
