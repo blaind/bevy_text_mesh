@@ -20,6 +20,7 @@ glyph_brush_layout = "0.2.3"
 [dependencies.bevy]
 version = "0.6.0"
 default-features = false
+features = ["render"]
 
 [dev-dependencies]
 rand = "0.8.4"
