@@ -1,7 +1,7 @@
 [package]
 name = "bevy_text_mesh"
-version = "0.0.2"
-edition = "2018"
+version = "0.1.0"
+edition = "2021"
 description = "A bevy 3D text mesh generator for displaying text"
 repository = "https://github.com/blaind/bevy_text_mesh"
 keywords = ["bevy"]
@@ -21,6 +21,7 @@ glyph_brush_layout = "0.2.3"
 [dependencies.bevy]
 version = "0.6.0"
 default-features = false
+features = ["render"]
 
 [dev-dependencies]
 rand = "0.8.4"
@@ -29,11 +30,8 @@ rand = "0.8.4"
 version = "0.6.0"
 default-features = false
 features = [
-  "bevy_gilrs",
   "bevy_winit",
   "render",
-  "png",
-  "hdr",
   "x11",
 ]
 
