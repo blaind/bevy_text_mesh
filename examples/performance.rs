@@ -32,12 +32,12 @@ fn main() {
         .add_plugin(TextMeshPlugin)
         .add_plugin(FrameTimeDiagnosticsPlugin::default())
         .add_plugin(LogDiagnosticsPlugin::default())
-        .add_startup_system(setup.system())
-        .add_startup_system(setup_text_mesh.system())
-        .add_system(spawn_meshes.system())
-        .add_system(update_text_mesh.system())
-        .add_system(rotate_camera.system())
-        .add_system_to_stage(CoreStage::PostUpdate, update_frame_rate.system())
+        .add_startup_system(setup)
+        .add_startup_system(setup_text_mesh)
+        .add_system(spawn_meshes)
+        .add_system(update_text_mesh)
+        .add_system(rotate_camera)
+        .add_system_to_stage(CoreStage::PostUpdate, update_frame_rate)
         .run();
 }
 

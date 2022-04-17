@@ -26,8 +26,8 @@ pub struct TextMeshPlugin;
 impl Plugin for TextMeshPlugin {
     fn build(&self, app: &mut App) {
         app.add_asset::<font_loader::TextMeshFont>()
-            .add_system(mesh_system::text_mesh.system())
-            .add_system(mesh_system::font_loaded.system())
+            .add_system(mesh_system::text_mesh)
+            .add_system(mesh_system::font_loaded)
             .insert_resource(MeshCache::default())
             .init_asset_loader::<font_loader::FontLoader>();
     }

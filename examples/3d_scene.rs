@@ -8,10 +8,10 @@ fn main() {
         .insert_resource(Msaa { samples: 4 })
         .add_plugins(DefaultPlugins)
         .add_plugin(TextMeshPlugin)
-        .add_startup_system(setup.system())
-        .add_startup_system(setup_text_mesh.system())
-        .add_system(update_text_mesh.system())
-        .add_system(rotate_camera.system())
+        .add_startup_system(setup)
+        .add_startup_system(setup_text_mesh)
+        .add_system(update_text_mesh)
+        .add_system(rotate_camera)
         .run();
 }
 

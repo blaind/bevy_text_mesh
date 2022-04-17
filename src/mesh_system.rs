@@ -121,8 +121,8 @@ impl Default for TextMeshState {
 }
 
 fn apply_mesh(mesh_data: MeshData, mesh: &mut Mesh) {
-    mesh.set_attribute(Mesh::ATTRIBUTE_POSITION, mesh_data.vertices);
-    mesh.set_attribute(Mesh::ATTRIBUTE_NORMAL, mesh_data.normals);
-    mesh.set_attribute(Mesh::ATTRIBUTE_UV_0, mesh_data.uvs);
+    mesh.insert_attribute(Mesh::ATTRIBUTE_POSITION, mesh_data.vertices);
+    mesh.insert_attribute(Mesh::ATTRIBUTE_NORMAL, mesh_data.normals);
+    mesh.insert_attribute(Mesh::ATTRIBUTE_UV_0, mesh_data.uvs);
     mesh.set_indices(Some(Indices::U32(mesh_data.indices)));
 }
