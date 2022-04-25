@@ -18,12 +18,11 @@ The text mesh is generated at runtime from runtime-tessellated (and cached) True
 Consider this as a preview of the plugin for gathering feedback about the API:
 
 - **The API will change in future - still iterating**
+- **Incompatible with `bevy_text` (2D)** - crate exposes its own asset loader for `.ttf` files, and replaces any other loaders. See [issue #9](https://github.com/blaind/bevy_text_mesh/issues/9)
 - Multiple `TextMesh` configuration fields are not implemented yet, see example below
 - Text color update is not implemented yet
 - Spacing of characters are incorrect
 - Mesh cache purging is not implemented - this implementation will leak memory
-- Crate exposes an asset loader for `.ttf` files, and replaces any other loaders (e.g. `bevy_text`)
-- **Currently, do not expose for untrusted font input**
 
 ## Bevy versions support table
 
