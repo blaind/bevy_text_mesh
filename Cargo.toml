@@ -18,15 +18,15 @@ anyhow = "1.0"
 glyph_brush_layout = "0.2.3"
 
 [dependencies.bevy]
-version = "0.7.0"
+version = "0.8.0"
 default-features = false
-features = ["render"]
+features = ["render", "bevy_asset"]
 
 [dev-dependencies]
 rand = "0.8.4"
 
 [dev-dependencies.bevy]
-version = "0.7.0"
+version = "0.8.0"
 default-features = false
 features = [
   "bevy_winit",
