@@ -63,7 +63,6 @@ pub(crate) fn generate_text_mesh(
     let mut scaled_row_y_max_height = 0.;
 
     let tab_size = 4;
-    let text_len = text.len();
     let mut column = 0;
 
     for (i, char) in text.chars().enumerate() {
