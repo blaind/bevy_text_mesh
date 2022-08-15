@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use ttf2mesh::{TTFFile, Value};
+use ttf2mesh::{TTFFile, Value, Glyph};
 
 use crate::{
     mesh_cache::{CacheKey, MeshCache},
@@ -64,9 +64,14 @@ pub(crate) fn generate_text_mesh(
 
     //println!("scalar={}, spacing={}", scalar, spacing);
     for char in text.chars() {
-        //println!("{} offset={}", char, scaled_offset);
-        if char == ' ' {
-            scaled_offset.x += 0.2 * scalar + spacing.x;
+        // always get some glyph for metrics
+        let mut glyph : Glyph = font.glyph_from_char('a').unwrap();
+
+        let is_space = char == ' ';
+        let is_tab = char == '\t';
+        if is_space || is_tab {
+            let times = if is_tab { 4.0 } else { 1.0 };
+            scaled_offset.x += (glyph.inner.advance * scalar) * times;
             continue;
         }
 
@@ -75,10 +80,10 @@ pub(crate) fn generate_text_mesh(
         let mesh = match cache.meshes.get(&key) {
             Some(mesh) => mesh,
             None => {
-                let glyph = font.glyph_from_char(char);
+                let glyph_res = font.glyph_from_char(char);
 
-                let mut glyph = match glyph {
-                    Ok(glyph) => glyph,
+                glyph = match glyph_res {
+                    Ok(g) => g,
                     Err(_) => {
                         println!("Glyph {} not found", char);
                         font.glyph_from_char('?').unwrap()
@@ -96,6 +101,10 @@ pub(crate) fn generate_text_mesh(
                 cache.meshes.get(&key).unwrap()
             }
         };
+
+        // ttf glyph knows a ton of usefyl metrics
+        // this one sets how much we move after symbol is rendered
+        let advance = glyph.inner.advance * scalar;
 
         let (mut xmin, mut xmax) = (f32::MAX, f32::MIN);
         let (mut ymin, mut ymax) = (f32::MAX, f32::MIN);
@@ -162,7 +171,7 @@ pub(crate) fn generate_text_mesh(
 
         vertices_offset += mesh.vertices_len();
 
-        scaled_offset.x += (xmax - xmin) * scalar + spacing.x;
+        scaled_offset.x += advance;
 
         if text_mesh.size.wrapping
             && scaled_offset.x + scalar + spacing.x > text_mesh.size.width.as_scalar().unwrap()
