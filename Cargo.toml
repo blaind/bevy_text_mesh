@@ -12,7 +12,7 @@ license = "MIT"
 readme = "README.md"
 
 [dependencies]
-ttf2mesh = "0.2.0"
+ttf2mesh = { git = "https://github.com/gavlig/ttf2mesh-rs.git" }
 bitflags = "1.2"
 anyhow = "1.0"
 glyph_brush_layout = "0.2.3"
