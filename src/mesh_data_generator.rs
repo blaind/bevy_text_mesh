@@ -13,6 +13,31 @@ pub(crate) struct MeshData {
     pub uvs: Vec<[f32; 2]>,
 }
 
+// struct ttf_glyph
+// {
+//     /* general fields */
+// 
+//     int index;                    /* glyph index in font */
+//     int symbol;                   /* utf-16 symbol */
+//     int npoints;                  /* total points within all contours */
+//     int ncontours;                /* number of contours in outline */
+//     uint32_t composite : 1;       /* it is composite glyph */
+//     uint32_t : 31;                /* reserved flags */
+// 
+//     /* horizontal glyph metrics */
+//     /* see https://docs.microsoft.com/en-us/typography/opentype/spec/hmtx */
+// 
+//     float xbounds[2];             /* min/max values ​​along the x coordinate */
+//     float ybounds[2];             /* min/max values ​​along the y coordinate */
+//     float advance;                /* advance width */
+//     float lbearing;               /* left side bearing */
+//     float rbearing;               /* right side bearing = aw - (lsb + xMax - xMin) */
+// 
+//     /* glyph outline */
+// 
+//     ttf_outline_t *outline;       /* original outline of the glyph or NULL */
+// };
+
 // FIXME: add validator, that validates all .unwrap's() at addition time
 // now crashes might occur
 //
@@ -65,7 +90,7 @@ pub(crate) fn generate_text_mesh(
     let tab_size = 4;
     let mut column = 0;
 
-    for (i, char) in text.chars().enumerate() {
+    for char in text.chars() {
         // println!("{} char [{}] column {}", i, char, column);
 
         // always get some glyph for metrics
@@ -83,6 +108,7 @@ pub(crate) fn generate_text_mesh(
 
             scaled_offset.x += (glyph.inner.advance * scalar) * times as f32;
             column += times;
+
             continue;
         } else {
             column += 1;
@@ -119,26 +145,8 @@ pub(crate) fn generate_text_mesh(
         // this one sets how much we move after symbol is rendered
         let advance = glyph.inner.advance * scalar;
 
-        let (mut xmin, mut xmax) = (f32::MAX, f32::MIN);
-        let (mut ymin, mut ymax) = (f32::MAX, f32::MIN);
-        for vertex in mesh.iter_vertices() {
-            let (x, y, _z) = vertex.val();
-            // optimization possibility: calculate per-glyph min/max when caching
-            if x < xmin {
-                xmin = x;
-            }
-            if x > xmax {
-                xmax = x;
-            }
-
-            if y < ymin {
-                ymin = y;
-            }
-            if y > ymax {
-                ymax = y;
-            }
-        }
-
+        let ymin = glyph.inner.ybounds[0];
+        let ymax = glyph.inner.ybounds[1];
         let y_diff = (ymax - ymin) * scalar;
         if scaled_row_y_max_height < y_diff {
             scaled_row_y_max_height = y_diff;
@@ -147,24 +155,11 @@ pub(crate) fn generate_text_mesh(
         for vertex in mesh.iter_vertices() {
             let (x, y, z) = vertex.val();
             vertices.push([
-                x * scalar + scaled_offset.x - xmin * scalar,
+                x * scalar + scaled_offset.x + glyph.inner.lbearing * scalar,
                 y * scalar + scaled_offset.y,
                 z * scalar,
             ]);
         }
-
-        /*
-        println!(
-            " - x({:.3} - {:.3})={:.3}, y({:.3} - {:.3})={:.3}",
-            xmin * scalar,
-            xmax * scalar,
-            (xmax - xmin) * scalar,
-            ymin * scalar,
-            ymax * scalar,
-            (ymax - ymin) * scalar
-        );
-        */
-        // 13 microsecs
 
         for normal in mesh.iter_normals().unwrap() {
             let (x, y, z) = normal.val();
