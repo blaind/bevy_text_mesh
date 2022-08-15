@@ -66,6 +66,7 @@ pub(crate) fn text_mesh(
                     material: material.map(|m| m.clone()).unwrap_or_else(|| {
                         materials.add(StandardMaterial {
                             base_color: text_mesh.style.color,
+                            unlit: true,
                             ..Default::default()
                         })
                     }),
