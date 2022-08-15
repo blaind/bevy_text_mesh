@@ -62,17 +62,31 @@ pub(crate) fn generate_text_mesh(
     let mut scaled_offset = Vec2::ZERO;
     let mut scaled_row_y_max_height = 0.;
 
-    //println!("scalar={}, spacing={}", scalar, spacing);
-    for char in text.chars() {
+    let tab_size = 4;
+    let text_len = text.len();
+    let mut column = 0;
+
+    for (i, char) in text.chars().enumerate() {
+        // println!("{} char [{}] column {}", i, char, column);
+
         // always get some glyph for metrics
         let mut glyph : Glyph = font.glyph_from_char('a').unwrap();
 
         let is_space = char == ' ';
         let is_tab = char == '\t';
         if is_space || is_tab {
-            let times = if is_tab { 4.0 } else { 1.0 };
-            scaled_offset.x += (glyph.inner.advance * scalar) * times;
+            let times =
+            if is_tab {
+                let t = tab_size - (column % tab_size);
+                // println!("{} tab times: {}", column, t);
+                t
+            } else { 1 };
+
+            scaled_offset.x += (glyph.inner.advance * scalar) * times as f32;
+            column += times;
             continue;
+        } else {
+            column += 1;
         }
 
         let key = CacheKey::new_3d(char, depth);
