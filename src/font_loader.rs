@@ -28,7 +28,7 @@ impl AssetLoader for FontLoader {
 #[derive(TypeUuid)]
 #[uuid = "5415ac03-d009-471e-89ab-dc0d4e31a8c4"]
 pub struct TextMeshFont {
-    pub(crate) ttf_font: ttf2mesh::TTFFile,
+    pub ttf_font: ttf2mesh::TTFFile,
 }
 
 impl std::fmt::Debug for TextMeshFont {
