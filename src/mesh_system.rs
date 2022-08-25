@@ -51,7 +51,7 @@ pub(crate) fn text_mesh(
 
         match mesh {
             Some(mesh) => {
-                let mesh = meshes.get_mut(mesh.clone()).unwrap();
+                let mesh = meshes.get_mut(mesh).unwrap();
                 apply_mesh(ttf2_mesh, mesh);
 
                 // TODO: handle color updates

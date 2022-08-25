@@ -28,6 +28,7 @@ Consider this as a preview of the plugin for gathering feedback about the API:
 
 | bevy | bevy_text_mesh |
 | ---- | -------------- |
+| 0.8  | 0.3.0          |
 | 0.7  | 0.2.0          |
 | 0.6  | 0.1.0          |
 | 0.5  | 0.0.2          |
