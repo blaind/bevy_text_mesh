@@ -75,7 +75,7 @@ fn setup_text_mesh(
     diagnostics.add(Diagnostic::new(TEXT_MESH_UPDATES, "text_mesh_updates", 20));
 
     let state = SceneState {
-        font: asset_server.load("fonts/FiraMono-Medium.ttf"),
+        font: asset_server.load("fonts/FiraMono-Medium.ttf#mesh"),
         text_count: 0,
         text_update_count: 0,
         material: materials.add(StandardMaterial {
@@ -200,7 +200,7 @@ fn update_text_mesh(
     }
 
     state.text_update_count += update_count;
-    diagnostics.add_measurement(TEXT_MESH_UPDATES, || { state.text_update_count as f64 });
+    diagnostics.add_measurement(TEXT_MESH_UPDATES, || state.text_update_count as f64);
 }
 
 fn rotate_camera(mut camera: Query<&mut Transform, With<Camera>>, time: Res<Time>) {

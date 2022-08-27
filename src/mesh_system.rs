@@ -44,7 +44,11 @@ pub(crate) fn text_mesh(
 
         let font = match fonts.get_mut(&text_mesh.style.font) {
             Some(font) => font,
-            None => continue, // should not reach here ever
+            None => {
+                // TODO: triggered a few times initially, when font not loaded yet
+                warn!("font mesh not found - did you load the font using #mesh label (`asset_server.load('font.ttf#mesh'))`");
+                continue;
+            }
         };
 
         let ttf2_mesh = generate_text_mesh(&text_mesh, &mut font.ttf_font, Some(&mut cache));
