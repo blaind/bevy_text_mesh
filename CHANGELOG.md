@@ -18,8 +18,6 @@
 
 - Upgrade bevy to 0.8.0
 
-https://github.com/blaind/bevy_text_mesh/compare/v0.2.0...v0.3.0
-
 ## Version 0.2.0 (2022-04-17)
 
 [Compare changelog](https://github.com/blaind/bevy_text_mesh/compare/v0.1.0...v0.2.0)
