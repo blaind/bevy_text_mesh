@@ -12,7 +12,7 @@ fn main() {
 struct AnimateRotation;
 
 fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
-    let font = asset_server.load("fonts/FiraMono-Medium.ttf");
+    let font = asset_server.load("fonts/FiraMono-Medium.ttf#mesh");
     let text_style = TextStyle {
         font,
         font_size: 60.0,

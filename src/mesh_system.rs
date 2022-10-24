@@ -11,7 +11,7 @@ pub(crate) fn text_mesh(
     mut materials: ResMut<Assets<StandardMaterial>>,
     mut meshes: ResMut<Assets<Mesh>>,
     mut fonts: ResMut<Assets<TextMeshFont>>,
-    text_meshes: Query<
+    mut text_meshes: Query<
         (
             Entity,
             &Transform,
@@ -19,7 +19,7 @@ pub(crate) fn text_mesh(
             Option<&Handle<StandardMaterial>>,
             &TextMesh,
             Option<&Handle<Mesh>>,
-            &TextMeshState,
+            &mut TextMeshState,
         ),
         Or<(Changed<TextMesh>, Changed<TextMeshState>)>,
     >,
@@ -39,14 +39,20 @@ pub(crate) fn text_mesh(
 
     // TODO: performance - split to mesh-update and mesh-create systems?
 
-    for text_mesh in text_meshes.iter() {
-        let (entity, transform, global_transform, material, text_mesh, mesh, _state) = text_mesh;
+    for text_mesh in text_meshes.iter_mut() {
+        let (entity, transform, global_transform, material, text_mesh, mesh, mut state) = text_mesh;
 
         let font = match fonts.get_mut(&text_mesh.style.font) {
             Some(font) => font,
             None => {
-                // TODO: triggered a few times initially, when font not loaded yet
-                warn!("font mesh not found - did you load the font using #mesh label (`asset_server.load('font.ttf#mesh'))`");
+                if !state.warning_shown {
+                    state.warning_trigger_count += 1;
+
+                    if state.warning_trigger_count > 5 {
+                        warn!("font mesh not found - did you load the font using #mesh label (`asset_server.load('font.ttf#mesh'))`");
+                        state.warning_shown = true;
+                    }
+                }
                 continue;
             }
         };
@@ -116,11 +122,18 @@ pub struct TextMeshState {
     // this state matters only when the fonts have not been loaded yet
     // will be None for text bundles spawned when fonts have are already loaded
     font_loaded: Option<bool>,
+
+    warning_trigger_count: usize,
+    warning_shown: bool,
 }
 
 impl Default for TextMeshState {
     fn default() -> Self {
-        Self { font_loaded: None }
+        Self {
+            font_loaded: None,
+            warning_trigger_count: 0,
+            warning_shown: false,
+        }
     }
 }
 

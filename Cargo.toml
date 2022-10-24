@@ -1,6 +1,6 @@
 [package]
 name = "bevy_text_mesh"
-version = "0.3.0"
+version = "0.4.0"
 edition = "2021"
 description = "A bevy 3D text mesh generator for displaying text"
 repository = "https://github.com/blaind/bevy_text_mesh"

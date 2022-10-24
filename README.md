@@ -18,7 +18,6 @@ The text mesh is generated at runtime from runtime-tessellated (and cached) True
 Consider this as a preview of the plugin for gathering feedback about the API:
 
 - **The API will change in future - still iterating**
-- **Incompatible with `bevy_text` (2D)** - crate exposes its own asset loader for `.ttf` files, and replaces any other loaders. See [issue #9](https://github.com/blaind/bevy_text_mesh/issues/9)
 - Multiple `TextMesh` configuration fields are not implemented yet, see example below
 - Text color update is not implemented yet
 - Spacing of characters are incorrect
@@ -28,7 +27,7 @@ Consider this as a preview of the plugin for gathering feedback about the API:
 
 | bevy | bevy_text_mesh |
 | ---- | -------------- |
-| 0.8  | 0.3.0          |
+| 0.8  | 0.4.0          |
 | 0.7  | 0.2.0          |
 | 0.6  | 0.1.0          |
 | 0.5  | 0.0.2          |
@@ -58,7 +57,7 @@ Add to Cargo.toml:
 
 ```
 [dependencies]
-bevy_text_mesh = "0.1.0"
+bevy_text_mesh = "0.4.0"
 ```
 
 Include the library:
@@ -88,7 +87,7 @@ Next, you are ready to spawn a text in your scene at a system:
 First, load a font asset:
 
 ```rust
-let font: Handle<TextMeshFont> = asset_server.load("fonts/FiraSans-Medium.ttf");
+let font: Handle<TextMeshFont> = asset_server.load("fonts/FiraSans-Medium.ttf#mesh");
 ```
 
 Then, spawn a textmesh bundle:
