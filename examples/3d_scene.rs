@@ -16,7 +16,7 @@ fn main() {
 }
 
 fn setup_text_mesh(mut commands: Commands, asset_server: Res<AssetServer>) {
-    let font: Handle<TextMeshFont> = asset_server.load("fonts/FiraMono-Medium.ttf");
+    let font: Handle<TextMeshFont> = asset_server.load("fonts/FiraMono-Medium.ttf#mesh");
 
     commands.spawn_bundle(TextMeshBundle {
         text_mesh: TextMesh {

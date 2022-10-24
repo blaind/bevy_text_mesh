@@ -1,5 +1,7 @@
+use anyhow::Result;
 use bevy::asset::{AssetLoader, BoxedFuture, LoadContext, LoadedAsset};
 use bevy::reflect::TypeUuid;
+use bevy::text::Font;
 
 #[derive(Default)]
 pub struct FontLoader;
@@ -9,13 +11,19 @@ impl AssetLoader for FontLoader {
         &'a self,
         bytes: &'a [u8],
         load_context: &'a mut LoadContext,
-    ) -> BoxedFuture<'a, anyhow::Result<()>> {
+    ) -> BoxedFuture<'a, Result<()>> {
         Box::pin(async move {
+            // standard bevy_text/src/font_loader code
+            let font = Font::try_from_bytes(bytes.into())?;
+            load_context.set_default_asset(LoadedAsset::new(font));
+
+            // ttf fontloading
             let font = TextMeshFont {
                 ttf_font: ttf2mesh::TTFFile::from_buffer_vec(bytes.to_vec()).unwrap(),
             };
 
-            load_context.set_default_asset(LoadedAsset::new(font));
+            load_context.set_labeled_asset("mesh", LoadedAsset::new(font));
+
             Ok(())
         })
     }
