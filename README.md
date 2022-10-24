@@ -21,7 +21,8 @@ Consider this as a preview of the plugin for gathering feedback about the API:
 - Multiple `TextMesh` configuration fields are not implemented yet, see example below
 - Text color update is not implemented yet
 - Spacing of characters are incorrect
-- Mesh cache purging is not implemented - this implementation will leak memory
+- Mesh cache purging is not implemented - this implementation will leak memory (see #2)
+- WASM builds are not supported (see #11)
 
 ## Bevy versions support table
 
