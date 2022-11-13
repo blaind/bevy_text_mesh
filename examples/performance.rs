@@ -41,6 +41,7 @@ fn main() {
         .run();
 }
 
+#[derive(Resource)]
 struct SceneState {
     font: Handle<TextMeshFont>,
     material: Handle<StandardMaterial>,
@@ -48,6 +49,7 @@ struct SceneState {
     text_update_count: usize,
 }
 
+#[derive(Resource)]
 struct UpdateTimer {
     spawn_new_text_timer: Timer,
     fps_update_timer: Timer,
@@ -86,7 +88,7 @@ fn setup_text_mesh(
     };
 
     commands
-        .spawn_bundle(TextMeshBundle {
+        .spawn(TextMeshBundle {
             text_mesh: TextMesh {
                 text: String::from("FPS"),
                 style: TextMeshStyle {
@@ -103,7 +105,7 @@ fn setup_text_mesh(
         .insert(FPS);
 
     commands
-        .spawn_bundle(TextMeshBundle {
+        .spawn(TextMeshBundle {
             text_mesh: TextMesh {
                 text: String::from("Text count"),
                 style: TextMeshStyle {
@@ -122,11 +124,14 @@ fn setup_text_mesh(
     commands.insert_resource(state);
 
     commands.insert_resource(UpdateTimer {
-        spawn_new_text_timer: Timer::new(Duration::from_millis(INITIAL_WAIT_MS), false),
-        text_update_timer: Timer::new(Duration::from_millis(TEXT_UPDATE_INTERVAL_MS), true),
+        spawn_new_text_timer: Timer::new(Duration::from_millis(INITIAL_WAIT_MS), TimerMode::Once),
+        text_update_timer: Timer::new(
+            Duration::from_millis(TEXT_UPDATE_INTERVAL_MS),
+            TimerMode::Repeating,
+        ),
 
         // how often FPS text is updated
-        fps_update_timer: Timer::new(Duration::from_millis(150), true),
+        fps_update_timer: Timer::new(Duration::from_millis(150), TimerMode::Repeating),
     });
 }
 
@@ -141,7 +146,8 @@ fn spawn_meshes(
         .tick(time.delta())
         .just_finished()
     {
-        timer.spawn_new_text_timer = Timer::new(Duration::from_millis(TEXT_SPAWN_INTERVAL), false);
+        timer.spawn_new_text_timer =
+            Timer::new(Duration::from_millis(TEXT_SPAWN_INTERVAL), TimerMode::Once);
 
         let mut rng = rand::thread_rng(); // how performant is this?
 
@@ -160,7 +166,7 @@ fn spawn_meshes(
         );
 
         commands
-            .spawn_bundle(TextMeshBundle {
+            .spawn(TextMeshBundle {
                 text_mesh: TextMesh {
                     text: String::from(""),
                     style: TextMeshStyle {
@@ -190,7 +196,7 @@ fn update_text_mesh(
     let mut update_count = 0;
     if timer.text_update_timer.tick(time.delta()).just_finished() {
         for mut text_mesh in text_meshes.iter_mut() {
-            let updated_text = String::from(format!("Time = {:.3}", time.seconds_since_startup()));
+            let updated_text = String::from(format!("Time = {:.3}", time.elapsed_seconds_f64()));
 
             if text_mesh.text != updated_text {
                 text_mesh.text = updated_text;
@@ -205,7 +211,7 @@ fn update_text_mesh(
 
 fn rotate_camera(mut camera: Query<&mut Transform, With<Camera>>, time: Res<Time>) {
     for mut camera in camera.iter_mut() {
-        let angle = time.seconds_since_startup() as f32 / 2. + 1.55 * std::f32::consts::PI;
+        let angle = time.elapsed_seconds_f64() as f32 / 2. + 1.55 * std::f32::consts::PI;
 
         let distance = 6.5;
 
@@ -256,16 +262,16 @@ fn setup(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    commands.spawn_bundle(PbrBundle {
+    commands.spawn(PbrBundle {
         mesh: meshes.add(Mesh::from(shape::Plane { size: 5.0 })),
         material: materials.add(Color::rgb(0.3, 0.5, 0.3).into()),
         ..Default::default()
     });
-    commands.spawn_bundle(PointLightBundle {
+    commands.spawn(PointLightBundle {
         transform: Transform::from_xyz(4.0, 8.0, 4.0),
         ..Default::default()
     });
-    commands.spawn_bundle(Camera3dBundle {
+    commands.spawn(Camera3dBundle {
         transform: Transform::from_xyz(-2.0, 2.5, 5.0).looking_at(Vec3::ZERO, Vec3::Y),
         ..Default::default()
     });

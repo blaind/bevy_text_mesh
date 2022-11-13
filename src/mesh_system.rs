@@ -71,7 +71,7 @@ pub(crate) fn text_mesh(
 
                 apply_mesh(ttf2_mesh, &mut mesh);
 
-                commands.entity(entity).insert_bundle(PbrBundle {
+                commands.entity(entity).insert(PbrBundle {
                     mesh: meshes.add(mesh),
                     material: material.map(|m| m.clone()).unwrap_or_else(|| {
                         materials.add(StandardMaterial {

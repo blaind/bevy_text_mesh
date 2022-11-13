@@ -28,6 +28,7 @@ Consider this as a preview of the plugin for gathering feedback about the API:
 
 | bevy | bevy_text_mesh |
 | ---- | -------------- |
+| 0.9  | 0.5.0          |
 | 0.8  | 0.4.0          |
 | 0.7  | 0.2.0          |
 | 0.6  | 0.1.0          |
@@ -58,7 +59,7 @@ Add to Cargo.toml:
 
 ```
 [dependencies]
-bevy_text_mesh = "0.4.0"
+bevy_text_mesh = "0.5.0"
 ```
 
 Include the library:
@@ -94,7 +95,7 @@ let font: Handle<TextMeshFont> = asset_server.load("fonts/FiraSans-Medium.ttf#me
 Then, spawn a textmesh bundle:
 
 ```rust
-commands.spawn_bundle(TextMeshBundle {
+commands.spawn(TextMeshBundle {
     text_mesh: TextMesh::new_with_color("Hello Bevy", font, Color::rgb(1., 1., 0.)),
     transform: Transform::from_xyz(-1., 1.75, 0.),
     ..Default::default()
@@ -104,7 +105,7 @@ commands.spawn_bundle(TextMeshBundle {
 Or with expanded syntax:
 
 ```rust
-commands.spawn_bundle(TextMeshBundle {
+commands.spawn(TextMeshBundle {
     text_mesh: TextMesh {
         text: String::from("Hello Bevy!"),
         style: TextMeshStyle {
