@@ -20,9 +20,9 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     };
     let text_alignment = TextAlignment::CENTER;
 
-    commands.spawn_bundle(Camera2dBundle::default());
+    commands.spawn(Camera2dBundle::default());
     commands
-        .spawn_bundle(Text2dBundle {
+        .spawn(Text2dBundle {
             text: Text::from_section("standard 2d text works too", text_style.clone())
                 .with_alignment(text_alignment),
             ..default()
@@ -35,6 +35,6 @@ fn animate_rotation(
     mut query: Query<&mut Transform, (With<Text>, With<AnimateRotation>)>,
 ) {
     for mut transform in &mut query {
-        transform.rotation = Quat::from_rotation_z(time.seconds_since_startup().cos() as f32);
+        transform.rotation = Quat::from_rotation_z(time.elapsed_seconds_f64().cos() as f32);
     }
 }

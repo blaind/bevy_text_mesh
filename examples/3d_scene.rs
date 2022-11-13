@@ -18,7 +18,7 @@ fn main() {
 fn setup_text_mesh(mut commands: Commands, asset_server: Res<AssetServer>) {
     let font: Handle<TextMeshFont> = asset_server.load("fonts/FiraMono-Medium.ttf#mesh");
 
-    commands.spawn_bundle(TextMeshBundle {
+    commands.spawn(TextMeshBundle {
         text_mesh: TextMesh {
             text: String::from("Time since startup"),
             style: TextMeshStyle {
@@ -40,7 +40,7 @@ fn setup_text_mesh(mut commands: Commands, asset_server: Res<AssetServer>) {
     });
 
     commands
-        .spawn_bundle(TextMeshBundle {
+        .spawn(TextMeshBundle {
             text_mesh: TextMesh {
                 text: String::from("0"),
                 style: TextMeshStyle {
@@ -61,10 +61,11 @@ fn setup_text_mesh(mut commands: Commands, asset_server: Res<AssetServer>) {
         .insert(EngineTime);
 
     commands.insert_resource(UpdateTimer {
-        timer: Timer::new(Duration::from_millis(100), true),
+        timer: Timer::new(Duration::from_millis(100), TimerMode::Repeating),
     });
 }
 
+#[derive(Resource)]
 struct UpdateTimer {
     timer: Timer,
 }
@@ -79,7 +80,7 @@ fn update_text_mesh(
 ) {
     if timer.timer.tick(time.delta()).just_finished() {
         for mut text_mesh in text_meshes.iter_mut() {
-            let updated_text = String::from(format!("Time = {:.3}", time.seconds_since_startup()));
+            let updated_text = String::from(format!("Time = {:.3}", time.elapsed_seconds_f64()));
 
             if text_mesh.text != updated_text {
                 text_mesh.text = updated_text;
@@ -90,7 +91,7 @@ fn update_text_mesh(
 
 fn rotate_camera(mut camera: Query<&mut Transform, With<Camera>>, time: Res<Time>) {
     for mut camera in camera.iter_mut() {
-        let angle = time.seconds_since_startup() as f32 / 2. + 1.55 * std::f32::consts::PI;
+        let angle = time.elapsed_seconds_f64() as f32 / 2. + 1.55 * std::f32::consts::PI;
 
         let distance = 3.5;
 
@@ -110,22 +111,22 @@ fn setup(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    commands.spawn_bundle(PbrBundle {
+    commands.spawn(PbrBundle {
         mesh: meshes.add(Mesh::from(shape::Plane { size: 5.0 })),
         material: materials.add(Color::rgb(0.3, 0.5, 0.3).into()),
         ..Default::default()
     });
-    commands.spawn_bundle(PbrBundle {
+    commands.spawn(PbrBundle {
         mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
         material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
         transform: Transform::from_xyz(0.0, 0.5, 0.0),
         ..Default::default()
     });
-    commands.spawn_bundle(PointLightBundle {
+    commands.spawn(PointLightBundle {
         transform: Transform::from_xyz(4.0, 8.0, 4.0),
         ..Default::default()
     });
-    commands.spawn_bundle(Camera3dBundle {
+    commands.spawn(Camera3dBundle {
         transform: Transform::from_xyz(-2.0, 2.5, 5.0).looking_at(Vec3::ZERO, Vec3::Y),
         ..Default::default()
     });

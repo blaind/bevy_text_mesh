@@ -1,5 +1,7 @@
 use std::{collections::HashMap, hash::Hash};
 
+use bevy::prelude::*;
+
 // TODO: add accuracy to depth cache
 // TODO: purge cached entries, keep count per depth, and if it reaches zero
 // TODO: actually cache meshdata
@@ -38,6 +40,7 @@ impl Hash for Depth {
 // FIXME uhm, empty?
 impl Eq for Depth {}
 
+#[derive(Resource)]
 pub struct MeshCache {
     pub(crate) meshes: HashMap<CacheKey, ttf2mesh::Mesh<'static, ttf2mesh::Mesh3d>>,
 }
