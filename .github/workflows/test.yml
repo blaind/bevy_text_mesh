@@ -7,14 +7,15 @@ env:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        os: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Install dependencies
         run: sudo apt-get install gcc patch libudev-dev
+	if: runner.os == 'linux'
 
       - uses: actions/checkout@v2
       - uses: dtolnay/rust-toolchain@stable
