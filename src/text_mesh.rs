@@ -2,7 +2,7 @@ use bevy::prelude::*;
 use glyph_brush_layout::{HorizontalAlign, VerticalAlign};
 
 use crate::{mesh_system::TextMeshState, TextMeshFont};
-pub use ttf2mesh::Quality;
+pub use meshtext::QualitySettings;
 
 #[derive(Default, Bundle, Debug)]
 pub struct TextMeshBundle {
@@ -108,7 +108,7 @@ pub struct TextMeshStyle {
     pub font_size: SizeUnit,
     pub font_style: FontStyle,
     pub color: Color,
-    pub mesh_quality: Quality,
+    pub mesh_quality: QualitySettings,
 }
 
 impl Default for TextMeshStyle {
@@ -118,7 +118,7 @@ impl Default for TextMeshStyle {
             font_size: SizeUnit::NonStandard(DEFAULT_FONT_SIZE),
             font_style: FontStyle::default(),
             color: Color::WHITE,
-            mesh_quality: Quality::Medium,
+            mesh_quality: QualitySettings::default(),
         }
     }
 }

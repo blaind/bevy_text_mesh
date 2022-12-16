@@ -1,6 +1,7 @@
 use std::{collections::HashMap, hash::Hash};
 
 use bevy::prelude::*;
+use meshtext::IndexedMeshText;
 
 // TODO: add accuracy to depth cache
 // TODO: purge cached entries, keep count per depth, and if it reaches zero
@@ -42,7 +43,7 @@ impl Eq for Depth {}
 
 #[derive(Resource)]
 pub struct MeshCache {
-    pub(crate) meshes: HashMap<CacheKey, ttf2mesh::Mesh<'static, ttf2mesh::Mesh3d>>,
+    pub(crate) meshes: HashMap<CacheKey, IndexedMeshText>,
 }
 
 impl Default for MeshCache {

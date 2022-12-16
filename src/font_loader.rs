@@ -33,6 +33,9 @@ impl AssetLoader for FontLoader {
         _: &'a Self::Settings,
         load_context: &'a mut LoadContext,
     ) -> BoxedFuture<'a, Result<Self::Asset, Self::Error>> {
+        let bytes: Vec<u8> = bytes.into();
+        let bytes = bytes.leak();
+
         Box::pin(async move {
             let mut bytes = Vec::new();
             reader
@@ -40,10 +43,15 @@ impl AssetLoader for FontLoader {
                 .await
                 .expect("unable to read font");
 
+            let common =
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789?!.,".to_string();
+
+            let mut generator = meshtext::MeshGenerator::new(&bytes);
+            generator.precache_glyphs(&common, false, None).unwrap();
+
             // ttf fontloading
             let font = TextMeshFont {
-                ttf_font: ttf2mesh::TTFFile::from_buffer_vec(bytes.clone())
-                    .expect("unable to decode asset"),
+                ttf_font_generator: generator,
             };
 
             load_context.add_labeled_asset("mesh".into(), font);
@@ -62,7 +70,7 @@ impl AssetLoader for FontLoader {
 #[derive(TypeUuid, TypePath, Asset)]
 #[uuid = "5415ac03-d009-471e-89ab-dc0d4e31a8c4"]
 pub struct TextMeshFont {
-    pub(crate) ttf_font: ttf2mesh::TTFFile,
+    pub(crate) ttf_font_generator: meshtext::MeshGenerator,
 }
 
 impl std::fmt::Debug for TextMeshFont {

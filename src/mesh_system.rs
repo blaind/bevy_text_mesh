@@ -57,19 +57,20 @@ pub(crate) fn text_mesh(
             }
         };
 
-        let ttf2_mesh = generate_text_mesh(&text_mesh, &mut font.ttf_font, Some(&mut cache));
+        let meshtext =
+            generate_text_mesh(&text_mesh, &mut font.ttf_font_generator, Some(&mut cache));
 
         match mesh {
             Some(mesh) => {
                 let mesh = meshes.get_mut(mesh).unwrap();
-                apply_mesh(ttf2_mesh, mesh);
+                apply_mesh(meshtext, mesh);
 
                 // TODO: handle color updates
             }
             None => {
                 let mut mesh = Mesh::new(PrimitiveTopology::TriangleList);
 
-                apply_mesh(ttf2_mesh, &mut mesh);
+                apply_mesh(meshtext, &mut mesh);
 
                 commands.entity(entity).insert(PbrBundle {
                     mesh: meshes.add(mesh),
