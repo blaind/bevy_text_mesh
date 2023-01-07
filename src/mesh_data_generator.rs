@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use meshtext::{Glyph, MeshGenerator};
+use meshtext::{Glyph, MeshGenerator, OwnedFace};
 
 use crate::{
     mesh_cache::{CacheKey, MeshCache},
@@ -20,7 +20,7 @@ pub(crate) struct MeshData {
 // from the existing mesh
 pub(crate) fn generate_text_mesh(
     text_mesh: &TextMesh,
-    font: &mut MeshGenerator,
+    font: &mut MeshGenerator<OwnedFace>,
     cache: Option<&mut MeshCache>,
 ) -> MeshData {
     trace!("Generate text mesh: {:?}", text_mesh.text);
@@ -97,7 +97,7 @@ mod tests {
     #[test]
     fn test_generate_mesh() {
         let mut mesh_cache = MeshCache::default();
-        let bytes = get_font_bytes().leak();
+        let bytes = get_font_bytes();
         let mut font = MeshGenerator::new(bytes);
 
         let text_mesh = TextMesh {

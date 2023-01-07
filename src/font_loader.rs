@@ -1,5 +1,6 @@
 use bevy::asset::AsyncReadExt;
 use bevy::text::Font;
+use glyph_brush_layout::ab_glyph::InvalidFont;
 use std::error::Error;
 use std::fmt::Display;
 
@@ -10,6 +11,12 @@ use bevy::reflect::{TypePath, TypeUuid};
 
 #[derive(Debug)]
 pub struct FontLoaderError;
+
+impl From<InvalidFont> for FontLoaderError {
+    fn from(_value: InvalidFont) -> Self {
+        Self
+    }
+}
 
 impl Error for FontLoaderError {}
 
@@ -30,23 +37,23 @@ impl AssetLoader for FontLoader {
     fn load<'a>(
         &'a self,
         reader: &'a mut Reader,
-        _: &'a Self::Settings,
+        _s: &'a Self::Settings,
         load_context: &'a mut LoadContext,
     ) -> BoxedFuture<'a, Result<Self::Asset, Self::Error>> {
-        let bytes: Vec<u8> = bytes.into();
-        let bytes = bytes.leak();
-
         Box::pin(async move {
             let mut bytes = Vec::new();
             reader
                 .read_to_end(&mut bytes)
                 .await
                 .expect("unable to read font");
+            // standard bevy_text/src/font_loader code
+            let font = Font::try_from_bytes(bytes.clone())?;
+            load_context.add_labeled_asset("font".into(), font);
 
             let common =
                 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789?!.,".to_string();
 
-            let mut generator = meshtext::MeshGenerator::new(&bytes);
+            let mut generator = meshtext::MeshGenerator::new(bytes.clone());
             generator.precache_glyphs(&common, false, None).unwrap();
 
             // ttf fontloading
@@ -70,7 +77,7 @@ impl AssetLoader for FontLoader {
 #[derive(TypeUuid, TypePath, Asset)]
 #[uuid = "5415ac03-d009-471e-89ab-dc0d4e31a8c4"]
 pub struct TextMeshFont {
-    pub(crate) ttf_font_generator: meshtext::MeshGenerator,
+    pub(crate) ttf_font_generator: meshtext::MeshGenerator<meshtext::OwnedFace>,
 }
 
 impl std::fmt::Debug for TextMeshFont {
