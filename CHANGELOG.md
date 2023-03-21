@@ -1,6 +1,14 @@
 # Changelog
 
-[git_tag_comparison]: https://github.com/blaind/bevy_text_mesh/compare/v0.5.0...main
+[git_tag_comparison]: https://github.com/blaind/bevy_text_mesh/compare/v0.6.0...main
+
+## Version 0.6.0 (2023-03-21)
+
+[Compare changelog](https://github.com/blaind/bevy_text_mesh/compare/v0.5.0...v0.6.0)
+
+### Changed
+
+- Upgrade bevy to 0.10.0
 
 ## Version 0.5.0 (2022-11-13)
 

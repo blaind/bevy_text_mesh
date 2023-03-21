@@ -28,6 +28,7 @@ Consider this as a preview of the plugin for gathering feedback about the API:
 
 | bevy | bevy_text_mesh |
 | ---- | -------------- |
+| 0.10 | 0.6.0          |
 | 0.9  | 0.5.0          |
 | 0.8  | 0.4.0          |
 | 0.7  | 0.2.0          |
@@ -59,7 +60,7 @@ Add to Cargo.toml:
 
 ```
 [dependencies]
-bevy_text_mesh = "0.5.0"
+bevy_text_mesh = "0.6.0"
 ```
 
 Include the library:
