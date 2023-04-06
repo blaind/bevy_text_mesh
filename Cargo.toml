@@ -13,7 +13,7 @@ readme = "README.md"
 
 [dependencies]
 ttf2mesh = "0.2.0"
-bitflags = "1.2"
+bitflags = "2.1"
 anyhow = "1.0"
 glyph_brush_layout = "0.2.3"
 
