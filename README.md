@@ -1,6 +1,6 @@
 # bevy_text_mesh &emsp; [![Build Status]][actions] [![Latest Version]][crates.io] [![Docs Version]][docs]
 
-[build status]: https://img.shields.io/github/workflow/status/blaind/bevy_text_mesh/test
+[build status]: https://img.shields.io/github/actions/workflow/status/blaind/bevy_text_mesh/test.yml?branch=main
 [actions]: https://github.com/blaind/bevy_text_mesh/actions?query=branch%3Amain
 [latest version]: https://img.shields.io/crates/v/bevy_text_mesh.svg
 [crates.io]: https://crates.io/crates/bevy_text_mesh
