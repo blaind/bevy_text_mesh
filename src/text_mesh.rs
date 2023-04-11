@@ -157,6 +157,7 @@ impl Default for TextMeshAlignment {
 }
 
 bitflags! {
+    #[derive(Clone, Debug)]
     pub struct FontStyle: u32 {
         const BOLD = 0b1; // TODO: implement - another font?
         const ITALIC = 0b10; // TODO: implement - another font?
