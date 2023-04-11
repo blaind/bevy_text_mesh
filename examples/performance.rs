@@ -27,7 +27,7 @@ const INITIAL_WAIT_MS: u64 = 500;
 
 fn main() {
     App::new()
-        .insert_resource(Msaa { samples: 4 })
+        .insert_resource(Msaa::Sample4)
         .add_plugins(DefaultPlugins)
         .add_plugin(TextMeshPlugin)
         .add_plugin(FrameTimeDiagnosticsPlugin::default())
@@ -37,7 +37,7 @@ fn main() {
         .add_system(spawn_meshes)
         .add_system(update_text_mesh)
         .add_system(rotate_camera)
-        .add_system_to_stage(CoreStage::PostUpdate, update_frame_rate)
+        .add_system(update_frame_rate.in_base_set(CoreSet::PostUpdate))
         .run();
 }
 
@@ -263,7 +263,7 @@ fn setup(
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
     commands.spawn(PbrBundle {
-        mesh: meshes.add(Mesh::from(shape::Plane { size: 5.0 })),
+        mesh: meshes.add(Mesh::from(shape::Plane::from_size(5.0))),
         material: materials.add(Color::rgb(0.3, 0.5, 0.3).into()),
         ..Default::default()
     });

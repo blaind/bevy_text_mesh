@@ -18,7 +18,7 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
         font_size: 60.0,
         color: Color::WHITE,
     };
-    let text_alignment = TextAlignment::CENTER;
+    let text_alignment = TextAlignment::Center;
 
     commands.spawn(Camera2dBundle::default());
     commands
