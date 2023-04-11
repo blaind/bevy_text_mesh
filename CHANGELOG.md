@@ -9,6 +9,7 @@
 ### Changed
 
 - Upgrade bevy to 0.10.0
+- Upgrade bitflags to 2.1.0
 
 ## Version 0.5.0 (2022-11-13)
 
