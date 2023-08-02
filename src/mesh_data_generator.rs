@@ -68,6 +68,10 @@ pub(crate) fn generate_text_mesh(
         if char == ' ' {
             scaled_offset.x += 0.2 * scalar + spacing.x;
             continue;
+        } else if char == '\n' {
+            scaled_offset.x = 0.;
+            scaled_offset.y -= scaled_row_y_max_height + spacing.y;
+            continue;
         }
 
         let key = CacheKey::new_3d(char, depth);
