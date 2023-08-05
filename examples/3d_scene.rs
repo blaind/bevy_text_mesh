@@ -6,12 +6,24 @@ use bevy_text_mesh::prelude::*;
 fn main() {
     App::new()
         .insert_resource(Msaa::Sample4)
-        .add_plugins(DefaultPlugins)
-        .add_plugin(TextMeshPlugin)
-        .add_startup_system(setup)
-        .add_startup_system(setup_text_mesh)
-        .add_system(update_text_mesh)
-        .add_system(rotate_camera)
+        .add_plugins(
+            (
+                DefaultPlugins,
+                TextMeshPlugin,
+            )
+        )
+        .add_systems(Startup,
+            (
+                setup,
+                setup_text_mesh.after(setup),
+            )
+        )
+        .add_systems(Update,
+            (
+                update_text_mesh,
+                rotate_camera,
+            )
+        )
         .run();
 }
 

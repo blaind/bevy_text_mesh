@@ -2,7 +2,7 @@ use std::time::Duration;
 
 use bevy::{
     diagnostic::{
-        Diagnostic, DiagnosticId, Diagnostics, FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin,
+        Diagnostic, DiagnosticId, Diagnostics, DiagnosticsStore, FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin, RegisterDiagnostic
     },
     prelude::*,
     render::camera::Camera,
@@ -28,16 +28,29 @@ const INITIAL_WAIT_MS: u64 = 500;
 fn main() {
     App::new()
         .insert_resource(Msaa::Sample4)
-        .add_plugins(DefaultPlugins)
-        .add_plugin(TextMeshPlugin)
-        .add_plugin(FrameTimeDiagnosticsPlugin::default())
-        .add_plugin(LogDiagnosticsPlugin::default())
-        .add_startup_system(setup)
-        .add_startup_system(setup_text_mesh)
-        .add_system(spawn_meshes)
-        .add_system(update_text_mesh)
-        .add_system(rotate_camera)
-        .add_system(update_frame_rate.in_base_set(CoreSet::PostUpdate))
+        .add_plugins((
+            DefaultPlugins,
+            TextMeshPlugin,
+            FrameTimeDiagnosticsPlugin::default(),
+            LogDiagnosticsPlugin::default(),
+        ))
+        .register_diagnostic(
+            Diagnostic::new(TEXT_MESH_UPDATES, "text_mesh_updates", 20)
+        )
+        .add_systems(Startup,
+            (
+                setup,
+                setup_text_mesh,
+            )
+        )
+        .add_systems(Update,
+            (
+                spawn_meshes,
+                update_text_mesh,
+                rotate_camera,
+            )
+        )
+        .add_systems(PostUpdate, update_frame_rate)
         .run();
 }
 
@@ -69,13 +82,10 @@ pub const TEXT_MESH_UPDATES: DiagnosticId =
     DiagnosticId::from_u128(1082410928401928501928509128509125);
 
 fn setup_text_mesh(
-    mut diagnostics: ResMut<Diagnostics>,
     mut materials: ResMut<Assets<StandardMaterial>>,
     mut commands: Commands,
     asset_server: Res<AssetServer>,
 ) {
-    diagnostics.add(Diagnostic::new(TEXT_MESH_UPDATES, "text_mesh_updates", 20));
-
     let state = SceneState {
         font: asset_server.load("fonts/FiraMono-Medium.ttf#mesh"),
         text_count: 0,
@@ -187,7 +197,7 @@ fn spawn_meshes(
 }
 
 fn update_text_mesh(
-    mut diagnostics: ResMut<Diagnostics>,
+    mut diagnostics: Diagnostics,
     mut text_meshes: Query<&mut TextMesh, With<EngineTime>>,
     time: Res<Time>,
     mut timer: ResMut<UpdateTimer>,
@@ -226,7 +236,7 @@ fn rotate_camera(mut camera: Query<&mut Transform, With<Camera>>, time: Res<Time
 }
 
 fn update_frame_rate(
-    diagnostics: Res<Diagnostics>,
+    diagnostics: Res<DiagnosticsStore>,
     time: Res<Time>,
     mut timer: ResMut<UpdateTimer>,
     mut fps_text: Query<(Entity, &mut TextMesh, Option<&FPS>), Or<(With<FPS>, With<TextCount>)>>,
