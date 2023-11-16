@@ -6,29 +6,14 @@ use bevy_text_mesh::prelude::*;
 fn main() {
     App::new()
         .insert_resource(Msaa::Sample4)
-        .add_plugins(
-            (
-                DefaultPlugins,
-                TextMeshPlugin,
-            )
-        )
-        .add_systems(Startup,
-            (
-                setup,
-                setup_text_mesh.after(setup),
-            )
-        )
-        .add_systems(Update,
-            (
-                update_text_mesh,
-                rotate_camera,
-            )
-        )
+        .add_plugins((DefaultPlugins, TextMeshPlugin))
+        .add_systems(Startup, (setup, setup_text_mesh.after(setup)))
+        .add_systems(Update, (update_text_mesh, rotate_camera))
         .run();
 }
 
 fn setup_text_mesh(mut commands: Commands, asset_server: Res<AssetServer>) {
-    let font: Handle<TextMeshFont> = asset_server.load("fonts/FiraMono-Medium.ttf#mesh");
+    let font: Handle<TextMeshFont> = asset_server.load("fonts/FiraMono-Medium.ttf");
 
     commands.spawn(TextMeshBundle {
         text_mesh: TextMesh {

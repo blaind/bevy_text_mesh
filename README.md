@@ -28,6 +28,7 @@ Consider this as a preview of the plugin for gathering feedback about the API:
 
 | bevy | bevy_text_mesh |
 | ---- | -------------- |
+| 0.12 | 0.8.0          |
 | 0.11 | 0.7.0          |
 | 0.10 | 0.6.0          |
 | 0.9  | 0.5.0          |
@@ -61,7 +62,7 @@ Add to Cargo.toml:
 
 ```
 [dependencies]
-bevy_text_mesh = "0.7.0"
+bevy_text_mesh = "0.8.0"
 ```
 
 Include the library:
@@ -91,7 +92,7 @@ Next, you are ready to spawn a text in your scene at a system:
 First, load a font asset:
 
 ```rust
-let font: Handle<TextMeshFont> = asset_server.load("fonts/FiraSans-Medium.ttf#mesh");
+let font: Handle<TextMeshFont> = asset_server.load("fonts/FiraSans-Medium.ttf");
 ```
 
 Then, spawn a textmesh bundle:
