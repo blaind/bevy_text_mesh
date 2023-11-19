@@ -2,7 +2,8 @@ use std::time::Duration;
 
 use bevy::{
     diagnostic::{
-        Diagnostic, DiagnosticId, Diagnostics, DiagnosticsStore, FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin, RegisterDiagnostic
+        Diagnostic, DiagnosticId, Diagnostics, DiagnosticsStore, FrameTimeDiagnosticsPlugin,
+        LogDiagnosticsPlugin, RegisterDiagnostic,
     },
     prelude::*,
     render::camera::Camera,
@@ -34,22 +35,9 @@ fn main() {
             FrameTimeDiagnosticsPlugin::default(),
             LogDiagnosticsPlugin::default(),
         ))
-        .register_diagnostic(
-            Diagnostic::new(TEXT_MESH_UPDATES, "text_mesh_updates", 20)
-        )
-        .add_systems(Startup,
-            (
-                setup,
-                setup_text_mesh,
-            )
-        )
-        .add_systems(Update,
-            (
-                spawn_meshes,
-                update_text_mesh,
-                rotate_camera,
-            )
-        )
+        .register_diagnostic(Diagnostic::new(TEXT_MESH_UPDATES, "text_mesh_updates", 20))
+        .add_systems(Startup, (setup, setup_text_mesh))
+        .add_systems(Update, (spawn_meshes, update_text_mesh, rotate_camera))
         .add_systems(PostUpdate, update_frame_rate)
         .run();
 }
@@ -87,7 +75,7 @@ fn setup_text_mesh(
     asset_server: Res<AssetServer>,
 ) {
     let state = SceneState {
-        font: asset_server.load("fonts/FiraMono-Medium.ttf#mesh"),
+        font: asset_server.load("fonts/FiraMono-Medium.ttf"),
         text_count: 0,
         text_update_count: 0,
         material: materials.add(StandardMaterial {

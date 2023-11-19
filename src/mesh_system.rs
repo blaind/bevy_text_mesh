@@ -95,19 +95,19 @@ pub(crate) fn font_loaded(
     // FIXME: this event system is triggered any time a new text is rendered
     // by AssetEvent::Modified caused by font.get_mut(). Improve performance?
 
-    for event in events.iter() {
+    for event in events.read() {
         match event {
-            AssetEvent::Created { handle } => {
+            AssetEvent::LoadedWithDependencies { id } => {
                 for (mut state, text_mesh) in query.iter_mut() {
-                    if handle == &text_mesh.style.font {
+                    if id == &text_mesh.style.font.id() {
                         state.font_loaded = Some(true);
                     }
                 }
             }
-            AssetEvent::Removed { handle } => {
+            AssetEvent::Removed { id } => {
                 // why would this happen? handling anyway
                 for (mut state, text_mesh) in query.iter_mut() {
-                    if handle == &text_mesh.style.font {
+                    if id == &text_mesh.style.font.id() {
                         state.font_loaded = Some(false);
                     }
                 }
