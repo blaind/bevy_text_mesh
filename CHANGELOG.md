@@ -1,6 +1,6 @@
 # Changelog
 
-[git_tag_comparison]: https://github.com/blaind/bevy_text_mesh/compare/v0.6.0...main
+[git_tag_comparison]: https://github.com/blaind/bevy_text_mesh/compare/v0.8.0...main
 
 ## Version 0.8.0 (2023-11-19)
 
@@ -8,18 +8,20 @@
 
 ### Changed
 
-- Upgrade bevy to 0.12.0
+- [Upgrade bevy to 0.12.0][32]
 - Breaking: font must no longer be loaded with `#mesh` suffix
 
-## Version 0.7.0 (2023-03-21)
+## Version 0.7.0 (2023-08-05)
 
 [Compare changelog](https://github.com/blaind/bevy_text_mesh/compare/v0.6.0...v0.7.0)
 
+This version was never published to crates.io.
+
 ### Changed
 
-- Upgrade bevy to 0.11.0
+- [Upgrade bevy to 0.11.0][29]
 
-## Version 0.6.0 (2023-03-21)
+## Version 0.6.0 (2023-04-11)
 
 [Compare changelog](https://github.com/blaind/bevy_text_mesh/compare/v0.5.0...v0.6.0)
 
@@ -61,3 +63,5 @@
 - Upgrade bevy to 0.7.0
 
 [15]: https://github.com/blaind/bevy_text_mesh/pull/15
+[29]: https://github.com/blaind/bevy_text_mesh/pull/29
+[32]: https://github.com/blaind/bevy_text_mesh/pull/32
