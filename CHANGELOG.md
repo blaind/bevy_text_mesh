@@ -2,6 +2,23 @@
 
 [git_tag_comparison]: https://github.com/blaind/bevy_text_mesh/compare/v0.6.0...main
 
+## Version 0.8.0 (2023-11-19)
+
+[Compare changelog](https://github.com/blaind/bevy_text_mesh/compare/v0.7.0...v0.8.0)
+
+### Changed
+
+- Upgrade bevy to 0.12.0
+- Breaking: font must no longer be loaded with `#mesh` suffix
+
+## Version 0.7.0 (2023-03-21)
+
+[Compare changelog](https://github.com/blaind/bevy_text_mesh/compare/v0.6.0...v0.7.0)
+
+### Changed
+
+- Upgrade bevy to 0.11.0
+
 ## Version 0.6.0 (2023-03-21)
 
 [Compare changelog](https://github.com/blaind/bevy_text_mesh/compare/v0.5.0...v0.6.0)
