@@ -74,9 +74,9 @@ use bevy_text_mesh::prelude::*;
 Second, add a `TextMeshPlugin` to your app:
 
 ```rust
-App::build()
+App::new()
     ...
-    .add_plugin(TextMeshPlugin)
+    .add_plugins(TextMeshPlugin)
     ...;
 ```
 
