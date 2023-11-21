@@ -75,7 +75,7 @@ fn setup_text_mesh(
     asset_server: Res<AssetServer>,
 ) {
     let state = SceneState {
-        font: asset_server.load("fonts/FiraMono-Medium.ttf"),
+        font: asset_server.load("fonts/FiraMono-Medium.ttf#mesh"),
         text_count: 0,
         text_update_count: 0,
         material: materials.add(StandardMaterial {

@@ -1,8 +1,9 @@
 use bevy::prelude::*;
+use bevy_text_mesh::TextMeshPlugin;
 
 fn main() {
     App::new()
-        .add_plugins(DefaultPlugins)
+        .add_plugins((DefaultPlugins, TextMeshPlugin))
         .add_systems(Startup, setup)
         .add_systems(Update, animate_rotation)
         .run();
