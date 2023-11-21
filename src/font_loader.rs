@@ -1,4 +1,5 @@
 use bevy::asset::AsyncReadExt;
+use bevy::text::Font;
 use std::error::Error;
 use std::fmt::Display;
 
@@ -22,7 +23,7 @@ impl Display for FontLoaderError {
 pub struct FontLoader;
 
 impl AssetLoader for FontLoader {
-    type Asset = TextMeshFont;
+    type Asset = Font;
     type Settings = ();
     type Error = FontLoaderError;
 
@@ -30,7 +31,7 @@ impl AssetLoader for FontLoader {
         &'a self,
         reader: &'a mut Reader,
         _: &'a Self::Settings,
-        _: &'a mut LoadContext,
+        load_context: &'a mut LoadContext,
     ) -> BoxedFuture<'a, Result<Self::Asset, Self::Error>> {
         Box::pin(async move {
             let mut bytes = Vec::new();
@@ -41,11 +42,15 @@ impl AssetLoader for FontLoader {
 
             // ttf fontloading
             let font = TextMeshFont {
-                ttf_font: ttf2mesh::TTFFile::from_buffer_vec(bytes)
+                ttf_font: ttf2mesh::TTFFile::from_buffer_vec(bytes.clone())
                     .expect("unable to decode asset"),
             };
 
-            Ok(font)
+            load_context.add_labeled_asset("mesh".into(), font);
+
+            let original_font = Font::try_from_bytes(bytes.into()).expect("unable to read font");
+
+            Ok(original_font)
         })
     }
 
