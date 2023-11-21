@@ -49,7 +49,7 @@ pub(crate) fn text_mesh(
                     state.warning_trigger_count += 1;
 
                     if state.warning_trigger_count > 5 {
-                        warn!("font mesh not found - did you load the font? (`asset_server.load('font.ttf'))`");
+                        warn!("font mesh not found - did you load the font? (`asset_server.load('font.ttf#mesh'))`");
                         state.warning_shown = true;
                     }
                 }

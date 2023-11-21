@@ -3,7 +3,7 @@ use bevy_text_mesh::TextMeshPlugin;
 
 fn main() {
     App::new()
-        .add_plugins((DefaultPlugins, TextMeshPlugin))
+        .add_plugins((DefaultPlugins, TextMeshPlugin)) // TextMeshPlugin for interop check
         .add_systems(Startup, setup)
         .add_systems(Update, animate_rotation)
         .run();
