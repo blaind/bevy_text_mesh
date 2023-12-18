@@ -142,6 +142,12 @@ commands.spawn(TextMeshBundle {
 });
 ```
 
+## Libclang
+
+Download <a href="https://releases.llvm.org/download.html">libclang</a> directly for Windows, or use a similar package manager command such as:
+
+``apt get libclang-dev``
+
 ## License
 
 Licensed under <a href="LICENSE">MIT license</a>
