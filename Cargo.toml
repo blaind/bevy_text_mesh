@@ -35,6 +35,7 @@ features = [
   "bevy_sprite",
   "x11",
   "tonemapping_luts",
+  "webgl2"
 ]
 
 [features]
