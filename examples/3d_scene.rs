@@ -1,8 +1,6 @@
-use std::time::Duration;
-
 use bevy::{prelude::*, render::camera::Camera};
 use bevy_text_mesh::prelude::*;
-
+use std::time::Duration;
 fn main() {
     App::new()
         .insert_resource(Msaa::Sample4)
@@ -31,6 +29,7 @@ fn setup_text_mesh(mut commands: Commands, asset_server: Res<AssetServer>) {
         },
         transform: Transform {
             translation: Vec3::new(-1., 1.75, 0.),
+            scale: Vec3::new(0.5, 0.5, 0.1),
             ..Default::default()
         },
         ..Default::default()
@@ -44,7 +43,7 @@ fn setup_text_mesh(mut commands: Commands, asset_server: Res<AssetServer>) {
                     font: font.clone(),
                     font_size: SizeUnit::NonStandard(36.),
                     color: Color::rgb(0.0, 1.0, 0.0),
-                    mesh_quality: Quality::Custom(128),
+                    mesh_quality: QualitySettings::default(),
                     ..Default::default()
                 },
                 ..Default::default()

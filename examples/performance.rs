@@ -15,7 +15,10 @@ use rand::prelude::*;
 // NOTE! Custom (unlit) material used
 
 // tessellation quality
-const MESH_QUALITY: Quality = Quality::Low;
+const MESH_QUALITY: QualitySettings = QualitySettings {
+    quad_interpolation_steps: 3,
+    cubic_interpolation_steps: 1,
+};
 
 // how often new texts are spawned
 const TEXT_SPAWN_INTERVAL: u64 = 125;
