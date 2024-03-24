@@ -19,13 +19,13 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
         font_size: 60.0,
         color: Color::WHITE,
     };
-    let text_alignment = TextAlignment::Center;
+    let text_alignment = JustifyText::Center;
 
     commands.spawn(Camera2dBundle::default());
     commands
         .spawn(Text2dBundle {
             text: Text::from_section("standard 2d text works too", text_style.clone())
-                .with_alignment(text_alignment),
+                .with_justify(text_alignment),
             ..default()
         })
         .insert(AnimateRotation);

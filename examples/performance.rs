@@ -2,7 +2,7 @@ use std::time::Duration;
 
 use bevy::{
     diagnostic::{
-        Diagnostic, DiagnosticId, Diagnostics, DiagnosticsStore, FrameTimeDiagnosticsPlugin,
+        Diagnostic, DiagnosticPath, Diagnostics, DiagnosticsStore, FrameTimeDiagnosticsPlugin,
         LogDiagnosticsPlugin, RegisterDiagnostic,
     },
     prelude::*,
@@ -35,7 +35,7 @@ fn main() {
             FrameTimeDiagnosticsPlugin::default(),
             LogDiagnosticsPlugin::default(),
         ))
-        .register_diagnostic(Diagnostic::new(TEXT_MESH_UPDATES, "text_mesh_updates", 20))
+        .register_diagnostic(Diagnostic::new(TEXT_MESH_UPDATES).with_max_history_length(20)) // , "text_mesh_updates", 20))
         .add_systems(Startup, (setup, setup_text_mesh))
         .add_systems(Update, (spawn_meshes, update_text_mesh, rotate_camera))
         .add_systems(PostUpdate, update_frame_rate)
@@ -66,8 +66,7 @@ struct FPS;
 #[derive(Component)]
 struct TextCount;
 
-pub const TEXT_MESH_UPDATES: DiagnosticId =
-    DiagnosticId::from_u128(1082410928401928501928509128509125);
+pub const TEXT_MESH_UPDATES: DiagnosticPath = DiagnosticPath::const_new("measurement");
 
 fn setup_text_mesh(
     mut materials: ResMut<Assets<StandardMaterial>>,
@@ -204,7 +203,7 @@ fn update_text_mesh(
     }
 
     state.text_update_count += update_count;
-    diagnostics.add_measurement(TEXT_MESH_UPDATES, || state.text_update_count as f64);
+    diagnostics.add_measurement(&TEXT_MESH_UPDATES, || state.text_update_count as f64);
 }
 
 fn rotate_camera(mut camera: Query<&mut Transform, With<Camera>>, time: Res<Time>) {
@@ -236,7 +235,7 @@ fn update_frame_rate(
         if timer.fps_update_timer.tick(time.delta()).just_finished() {
             if fps.is_some() {
                 let fps = diagnostics
-                    .get_measurement(FrameTimeDiagnosticsPlugin::FPS)
+                    .get_measurement(&FrameTimeDiagnosticsPlugin::FPS)
                     .unwrap();
 
                 text_mesh.text = format!("FPS={}", fps.value.round() as usize);
@@ -261,8 +260,8 @@ fn setup(
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
     commands.spawn(PbrBundle {
-        mesh: meshes.add(Mesh::from(shape::Plane::from_size(5.0))),
-        material: materials.add(Color::rgb(0.3, 0.5, 0.3).into()),
+        mesh: meshes.add(Mesh::from(Plane3d::default().mesh().size(5.0, 5.0))),
+        material: materials.add(Color::rgb(0.3, 0.5, 0.3)),
         ..Default::default()
     });
     commands.spawn(PointLightBundle {

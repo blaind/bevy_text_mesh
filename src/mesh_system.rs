@@ -1,3 +1,4 @@
+use bevy::render::render_asset::RenderAssetUsages;
 use bevy::render::render_resource::PrimitiveTopology;
 use bevy::{prelude::*, render::mesh::Indices};
 
@@ -57,33 +58,38 @@ pub(crate) fn text_mesh(
             }
         };
 
-        let ttf2_mesh = generate_text_mesh(&text_mesh, &mut font.ttf_font, Some(&mut cache));
+        let mut new_mesh = true;
 
-        match mesh {
-            Some(mesh) => {
-                let mesh = meshes.get_mut(mesh).unwrap();
-                apply_mesh(ttf2_mesh, mesh);
-
-                // TODO: handle color updates
+        if let Some(mesh) = mesh {
+            if let Some(asset_mesh) = meshes.get_mut(mesh) {
+                new_mesh = false;
+                let ttf2_mesh =
+                    generate_text_mesh(&text_mesh, &mut font.ttf_font, Some(&mut cache));
+                apply_mesh(ttf2_mesh, asset_mesh);
             }
-            None => {
-                let mut mesh = Mesh::new(PrimitiveTopology::TriangleList);
+        }
 
-                apply_mesh(ttf2_mesh, &mut mesh);
+        if new_mesh {
+            let mut mesh = Mesh::new(
+                PrimitiveTopology::TriangleList,
+                RenderAssetUsages::RENDER_WORLD,
+            );
 
-                commands.entity(entity).insert(PbrBundle {
-                    mesh: meshes.add(mesh),
-                    material: material.map(|m| m.clone()).unwrap_or_else(|| {
-                        materials.add(StandardMaterial {
-                            base_color: text_mesh.style.color,
-                            ..Default::default()
-                        })
-                    }),
-                    transform: transform.clone(),
-                    global_transform: global_transform.clone(),
-                    ..Default::default()
-                });
-            }
+            let ttf2_mesh = generate_text_mesh(&text_mesh, &mut font.ttf_font, Some(&mut cache));
+            apply_mesh(ttf2_mesh, &mut mesh);
+
+            commands.entity(entity).insert(PbrBundle {
+                mesh: meshes.add(mesh),
+                material: material.map(|m| m.clone()).unwrap_or_else(|| {
+                    materials.add(StandardMaterial {
+                        base_color: text_mesh.style.color,
+                        ..Default::default()
+                    })
+                }),
+                transform: transform.clone(),
+                global_transform: global_transform.clone(),
+                ..Default::default()
+            });
         }
     }
 }
@@ -141,5 +147,5 @@ fn apply_mesh(mesh_data: MeshData, mesh: &mut Mesh) {
     mesh.insert_attribute(Mesh::ATTRIBUTE_POSITION, mesh_data.vertices);
     mesh.insert_attribute(Mesh::ATTRIBUTE_NORMAL, mesh_data.normals);
     mesh.insert_attribute(Mesh::ATTRIBUTE_UV_0, mesh_data.uvs);
-    mesh.set_indices(Some(Indices::U32(mesh_data.indices)));
+    mesh.insert_indices(Indices::U32(mesh_data.indices));
 }

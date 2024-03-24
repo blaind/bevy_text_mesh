@@ -6,7 +6,7 @@ use std::fmt::Display;
 use anyhow::Result;
 use bevy::asset::io::Reader;
 use bevy::asset::{Asset, AssetLoader, BoxedFuture, LoadContext};
-use bevy::reflect::{TypePath, TypeUuid};
+use bevy::reflect::TypePath;
 
 #[derive(Debug)]
 pub struct FontLoaderError;
@@ -59,8 +59,8 @@ impl AssetLoader for FontLoader {
     }
 }
 
-#[derive(TypeUuid, TypePath, Asset)]
-#[uuid = "5415ac03-d009-471e-89ab-dc0d4e31a8c4"]
+#[derive(TypePath, Asset)]
+// #[uuid = "5415ac03-d009-471e-89ab-dc0d4e31a8c4"]
 pub struct TextMeshFont {
     pub(crate) ttf_font: ttf2mesh::TTFFile,
 }
